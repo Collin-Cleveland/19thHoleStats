@@ -1,6 +1,6 @@
 # 19thHoleStats
 
-19th Hole Stats: One Pager
+19th Hole Stats:
 
 
 A golf performance tracking and analysis web application that allows users to input their score and other relevant stats while on the golf course. The user will input the name of the course they are playing and the par score of the course as well as the par score for each hole they are on. At the end of the round the user will have their final score which will then be saved and posted to their profile for future reference.
