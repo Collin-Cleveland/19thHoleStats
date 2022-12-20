@@ -1,0 +1,42 @@
+{
+  "applications": ["passionProject"],
+  "changelogDate": "20221220212155",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "hole_data",
+  "fields": [
+    {
+      "fieldName": "holeScore",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "putts",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "fairwayHit",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "HoleData",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "hole",
+      "otherEntityRelationshipName": "holeData",
+      "ownerSide": true,
+      "relationshipName": "hole",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "scorecard",
+      "otherEntityRelationshipName": "holeData",
+      "relationshipName": "scorecard",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

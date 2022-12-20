@@ -1,0 +1,50 @@
+{
+  "applications": ["passionProject"],
+  "changelogDate": "20221220212151",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "course",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "par",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Course",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "club",
+      "otherEntityRelationshipName": "course",
+      "relationshipName": "club",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "scorecard",
+      "otherEntityRelationshipName": "course",
+      "ownerSide": false,
+      "relationshipName": "scorecard",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "hole",
+      "otherEntityRelationshipName": "course",
+      "relationshipName": "hole",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "round",
+      "otherEntityRelationshipName": "course",
+      "relationshipName": "round",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

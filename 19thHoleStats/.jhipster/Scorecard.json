@@ -1,0 +1,54 @@
+{
+  "applications": ["passionProject"],
+  "changelogDate": "20221220212152",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "scorecard",
+  "fields": [
+    {
+      "fieldName": "teeColor",
+      "fieldType": "TeeColor",
+      "fieldValues": "BLUE (Blue),WHITE (White),GOLD (Gold),RED (Red)"
+    },
+    {
+      "fieldName": "totalScore",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "totalPutts",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "fairwaysHit",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Scorecard",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "course",
+      "otherEntityRelationshipName": "scorecard",
+      "ownerSide": true,
+      "relationshipName": "course",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "round",
+      "otherEntityRelationshipName": "scorecard",
+      "ownerSide": false,
+      "relationshipName": "round",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "holeData",
+      "otherEntityRelationshipName": "scorecard",
+      "relationshipName": "holeData",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

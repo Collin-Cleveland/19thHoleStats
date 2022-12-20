@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity HoleData.
+    -->
+    <changeSet id="20221220212155-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="hole_id"
+                                 baseTableName="hole_data"
+                                 constraintName="fk_hole_data__hole_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="hole"/>
+
+        <addForeignKeyConstraint baseColumnNames="scorecard_id"
+                                 baseTableName="hole_data"
+                                 constraintName="fk_hole_data__scorecard_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="scorecard"/>
+    </changeSet>
+</databaseChangeLog>

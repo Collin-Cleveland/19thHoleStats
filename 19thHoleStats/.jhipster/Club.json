@@ -1,0 +1,35 @@
+{
+  "applications": ["passionProject"],
+  "changelogDate": "20221220212150",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "club",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Club",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "course",
+      "otherEntityRelationshipName": "club",
+      "relationshipName": "course",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

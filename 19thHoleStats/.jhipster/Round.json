@@ -1,0 +1,44 @@
+{
+  "applications": ["passionProject"],
+  "changelogDate": "20221220212153",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "round",
+  "fields": [
+    {
+      "fieldName": "datePlayed",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "numOfHolesPlayed",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Round",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "scorecard",
+      "otherEntityRelationshipName": "round",
+      "ownerSide": true,
+      "relationshipName": "scorecard",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "course",
+      "otherEntityRelationshipName": "round",
+      "relationshipName": "course",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "golfer",
+      "otherEntityRelationshipName": "round",
+      "relationshipName": "golfer",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

@@ -1,0 +1,28 @@
+{
+  "passionProjectApp": {
+    "holeData": {
+      "home": {
+        "title": "Hole Data",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Hole Data",
+        "createOrEditLabel": "Create or edit a Hole Data",
+        "notFound": "No Hole Data found"
+      },
+      "created": "A new Hole Data is created with identifier {{ param }}",
+      "updated": "A Hole Data is updated with identifier {{ param }}",
+      "deleted": "A Hole Data is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Hole Data {{ id }}?"
+      },
+      "detail": {
+        "title": "Hole Data"
+      },
+      "id": "ID",
+      "holeScore": "Hole Score",
+      "putts": "Putts",
+      "fairwayHit": "Fairway Hit",
+      "hole": "Hole",
+      "scorecard": "Scorecard"
+    }
+  }
+}

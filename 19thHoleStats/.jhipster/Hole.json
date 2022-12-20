@@ -1,0 +1,40 @@
+{
+  "applications": ["passionProject"],
+  "changelogDate": "20221220212154",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "hole",
+  "fields": [
+    {
+      "fieldName": "holeNumber",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["max"],
+      "fieldValidateRulesMax": "18"
+    },
+    {
+      "fieldName": "par",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Hole",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "course",
+      "otherEntityRelationshipName": "hole",
+      "relationshipName": "course",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "holeData",
+      "otherEntityRelationshipName": "hole",
+      "ownerSide": false,
+      "relationshipName": "holeData",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "no"
+}

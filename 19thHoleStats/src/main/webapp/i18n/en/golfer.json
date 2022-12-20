@@ -1,0 +1,29 @@
+{
+  "passionProjectApp": {
+    "golfer": {
+      "home": {
+        "title": "Golfers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Golfer",
+        "createOrEditLabel": "Create or edit a Golfer",
+        "notFound": "No Golfers found"
+      },
+      "created": "A new Golfer is created with identifier {{ param }}",
+      "updated": "A Golfer is updated with identifier {{ param }}",
+      "deleted": "A Golfer is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Golfer {{ id }}?"
+      },
+      "detail": {
+        "title": "Golfer"
+      },
+      "id": "ID",
+      "name": "Name",
+      "avgScore": "Avg Score",
+      "roundsPlayed": "Rounds Played",
+      "handicap": "Handicap",
+      "user": "User",
+      "round": "Round"
+    }
+  }
+}

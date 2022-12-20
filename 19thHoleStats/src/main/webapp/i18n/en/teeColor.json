@@ -1,0 +1,11 @@
+{
+  "passionProjectApp": {
+    "TeeColor": {
+      "null": "",
+      "BLUE": "Blue",
+      "WHITE": "White",
+      "GOLD": "Gold",
+      "RED": "Red"
+    }
+  }
+}

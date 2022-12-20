@@ -1,0 +1,46 @@
+{
+  "applications": ["passionProject"],
+  "changelogDate": "20221220212149",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "golfer",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "avgScore",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "roundsPlayed",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "handicap",
+      "fieldType": "Double"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Golfer",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "golfer",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "round",
+      "otherEntityRelationshipName": "golfer",
+      "relationshipName": "round",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

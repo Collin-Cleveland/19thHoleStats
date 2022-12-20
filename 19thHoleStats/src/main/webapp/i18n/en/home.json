@@ -1,0 +1,9 @@
+{
+  "home": {
+    "title": "19th Hole Stats",
+    "subtitle": "Pocket Caddie",
+    "logged": {
+      "message": "You are logged in as user \"{{username}}\"."
+    }
+  }
+}

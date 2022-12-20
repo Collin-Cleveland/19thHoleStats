@@ -1,0 +1,30 @@
+{
+  "passionProjectApp": {
+    "scorecard": {
+      "home": {
+        "title": "Scorecards",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Scorecard",
+        "createOrEditLabel": "Create or edit a Scorecard",
+        "notFound": "No Scorecards found"
+      },
+      "created": "A new Scorecard is created with identifier {{ param }}",
+      "updated": "A Scorecard is updated with identifier {{ param }}",
+      "deleted": "A Scorecard is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Scorecard {{ id }}?"
+      },
+      "detail": {
+        "title": "Scorecard"
+      },
+      "id": "ID",
+      "teeColor": "Tee Color",
+      "totalScore": "Total Score",
+      "totalPutts": "Total Putts",
+      "fairwaysHit": "Fairways Hit",
+      "course": "Course",
+      "round": "Round",
+      "holeData": "Hole Data"
+    }
+  }
+}
