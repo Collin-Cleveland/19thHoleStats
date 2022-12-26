@@ -1,13 +1,14 @@
 {
   "applications": ["passionProject"],
-  "changelogDate": "20221220212155",
-  "dto": "no",
+  "changelogDate": "20221226200950",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "hole_data",
   "fields": [
     {
       "fieldName": "holeScore",
-      "fieldType": "Integer"
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "putts",
@@ -38,5 +39,5 @@
       "relationshipType": "many-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

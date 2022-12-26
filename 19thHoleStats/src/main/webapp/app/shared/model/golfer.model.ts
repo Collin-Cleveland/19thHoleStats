@@ -3,7 +3,7 @@ import { IRound } from 'app/shared/model/round.model';
 
 export interface IGolfer {
   id?: number;
-  name?: string | null;
+  name?: string;
   avgScore?: number | null;
   roundsPlayed?: number | null;
   handicap?: number | null;

@@ -23,11 +23,13 @@ public class Hole implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Max(value = 18)
-    @Column(name = "hole_number")
+    @Column(name = "hole_number", nullable = false)
     private Integer holeNumber;
 
-    @Column(name = "par")
+    @NotNull
+    @Column(name = "par", nullable = false)
     private Integer par;
 
     @ManyToOne

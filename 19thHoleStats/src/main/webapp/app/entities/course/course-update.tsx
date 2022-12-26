@@ -98,8 +98,27 @@ export const CourseUpdate = () => {
                   validate={{ required: true }}
                 />
               ) : null}
-              <ValidatedField label={translate('passionProjectApp.course.name')} id="course-name" name="name" data-cy="name" type="text" />
-              <ValidatedField label={translate('passionProjectApp.course.par')} id="course-par" name="par" data-cy="par" type="text" />
+              <ValidatedField
+                label={translate('passionProjectApp.course.name')}
+                id="course-name"
+                name="name"
+                data-cy="name"
+                type="text"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                }}
+              />
+              <ValidatedField
+                label={translate('passionProjectApp.course.par')}
+                id="course-par"
+                name="par"
+                data-cy="par"
+                type="text"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                  validate: v => isNumber(v) || translate('entity.validation.number'),
+                }}
+              />
               <ValidatedField id="course-club" name="club" data-cy="club" label={translate('passionProjectApp.course.club')} type="select">
                 <option value="" key="0" />
                 {clubs

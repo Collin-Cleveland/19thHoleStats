@@ -5,14 +5,16 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import rocks.zipcode.domain.HoleData;
 import rocks.zipcode.repository.HoleDataRepository;
+import rocks.zipcode.service.HoleDataService;
+import rocks.zipcode.service.dto.HoleDataDTO;
 import rocks.zipcode.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -22,7 +24,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class HoleDataResource {
 
     private final Logger log = LoggerFactory.getLogger(HoleDataResource.class);
@@ -32,26 +33,29 @@ public class HoleDataResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final HoleDataService holeDataService;
+
     private final HoleDataRepository holeDataRepository;
 
-    public HoleDataResource(HoleDataRepository holeDataRepository) {
+    public HoleDataResource(HoleDataService holeDataService, HoleDataRepository holeDataRepository) {
+        this.holeDataService = holeDataService;
         this.holeDataRepository = holeDataRepository;
     }
 
     /**
      * {@code POST  /hole-data} : Create a new holeData.
      *
-     * @param holeData the holeData to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new holeData, or with status {@code 400 (Bad Request)} if the holeData has already an ID.
+     * @param holeDataDTO the holeDataDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new holeDataDTO, or with status {@code 400 (Bad Request)} if the holeData has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/hole-data")
-    public ResponseEntity<HoleData> createHoleData(@RequestBody HoleData holeData) throws URISyntaxException {
-        log.debug("REST request to save HoleData : {}", holeData);
-        if (holeData.getId() != null) {
+    public ResponseEntity<HoleDataDTO> createHoleData(@Valid @RequestBody HoleDataDTO holeDataDTO) throws URISyntaxException {
+        log.debug("REST request to save HoleData : {}", holeDataDTO);
+        if (holeDataDTO.getId() != null) {
             throw new BadRequestAlertException("A new holeData cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        HoleData result = holeDataRepository.save(holeData);
+        HoleDataDTO result = holeDataService.save(holeDataDTO);
         return ResponseEntity
             .created(new URI("/api/hole-data/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -61,23 +65,23 @@ public class HoleDataResource {
     /**
      * {@code PUT  /hole-data/:id} : Updates an existing holeData.
      *
-     * @param id the id of the holeData to save.
-     * @param holeData the holeData to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated holeData,
-     * or with status {@code 400 (Bad Request)} if the holeData is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the holeData couldn't be updated.
+     * @param id the id of the holeDataDTO to save.
+     * @param holeDataDTO the holeDataDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated holeDataDTO,
+     * or with status {@code 400 (Bad Request)} if the holeDataDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the holeDataDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/hole-data/{id}")
-    public ResponseEntity<HoleData> updateHoleData(
+    public ResponseEntity<HoleDataDTO> updateHoleData(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody HoleData holeData
+        @Valid @RequestBody HoleDataDTO holeDataDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update HoleData : {}, {}", id, holeData);
-        if (holeData.getId() == null) {
+        log.debug("REST request to update HoleData : {}, {}", id, holeDataDTO);
+        if (holeDataDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, holeData.getId())) {
+        if (!Objects.equals(id, holeDataDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -85,34 +89,34 @@ public class HoleDataResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        HoleData result = holeDataRepository.save(holeData);
+        HoleDataDTO result = holeDataService.update(holeDataDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, holeData.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, holeDataDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /hole-data/:id} : Partial updates given fields of an existing holeData, field will ignore if it is null
      *
-     * @param id the id of the holeData to save.
-     * @param holeData the holeData to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated holeData,
-     * or with status {@code 400 (Bad Request)} if the holeData is not valid,
-     * or with status {@code 404 (Not Found)} if the holeData is not found,
-     * or with status {@code 500 (Internal Server Error)} if the holeData couldn't be updated.
+     * @param id the id of the holeDataDTO to save.
+     * @param holeDataDTO the holeDataDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated holeDataDTO,
+     * or with status {@code 400 (Bad Request)} if the holeDataDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the holeDataDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the holeDataDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/hole-data/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<HoleData> partialUpdateHoleData(
+    public ResponseEntity<HoleDataDTO> partialUpdateHoleData(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody HoleData holeData
+        @NotNull @RequestBody HoleDataDTO holeDataDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update HoleData partially : {}, {}", id, holeData);
-        if (holeData.getId() == null) {
+        log.debug("REST request to partial update HoleData partially : {}, {}", id, holeDataDTO);
+        if (holeDataDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, holeData.getId())) {
+        if (!Objects.equals(id, holeDataDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -120,26 +124,11 @@ public class HoleDataResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<HoleData> result = holeDataRepository
-            .findById(holeData.getId())
-            .map(existingHoleData -> {
-                if (holeData.getHoleScore() != null) {
-                    existingHoleData.setHoleScore(holeData.getHoleScore());
-                }
-                if (holeData.getPutts() != null) {
-                    existingHoleData.setPutts(holeData.getPutts());
-                }
-                if (holeData.getFairwayHit() != null) {
-                    existingHoleData.setFairwayHit(holeData.getFairwayHit());
-                }
-
-                return existingHoleData;
-            })
-            .map(holeDataRepository::save);
+        Optional<HoleDataDTO> result = holeDataService.partialUpdate(holeDataDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, holeData.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, holeDataDTO.getId().toString())
         );
     }
 
@@ -149,34 +138,34 @@ public class HoleDataResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of holeData in body.
      */
     @GetMapping("/hole-data")
-    public List<HoleData> getAllHoleData() {
+    public List<HoleDataDTO> getAllHoleData() {
         log.debug("REST request to get all HoleData");
-        return holeDataRepository.findAll();
+        return holeDataService.findAll();
     }
 
     /**
      * {@code GET  /hole-data/:id} : get the "id" holeData.
      *
-     * @param id the id of the holeData to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the holeData, or with status {@code 404 (Not Found)}.
+     * @param id the id of the holeDataDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the holeDataDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/hole-data/{id}")
-    public ResponseEntity<HoleData> getHoleData(@PathVariable Long id) {
+    public ResponseEntity<HoleDataDTO> getHoleData(@PathVariable Long id) {
         log.debug("REST request to get HoleData : {}", id);
-        Optional<HoleData> holeData = holeDataRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(holeData);
+        Optional<HoleDataDTO> holeDataDTO = holeDataService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(holeDataDTO);
     }
 
     /**
      * {@code DELETE  /hole-data/:id} : delete the "id" holeData.
      *
-     * @param id the id of the holeData to delete.
+     * @param id the id of the holeDataDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/hole-data/{id}")
     public ResponseEntity<Void> deleteHoleData(@PathVariable Long id) {
         log.debug("REST request to delete HoleData : {}", id);
-        holeDataRepository.deleteById(id);
+        holeDataService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

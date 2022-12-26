@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import rocks.zipcode.IntegrationTest;
 import rocks.zipcode.domain.Golfer;
 import rocks.zipcode.repository.GolferRepository;
+import rocks.zipcode.service.dto.GolferDTO;
+import rocks.zipcode.service.mapper.GolferMapper;
 
 /**
  * Integration tests for the {@link GolferResource} REST controller.
@@ -49,6 +51,9 @@ class GolferResourceIT {
 
     @Autowired
     private GolferRepository golferRepository;
+
+    @Autowired
+    private GolferMapper golferMapper;
 
     @Autowired
     private EntityManager em;
@@ -98,8 +103,9 @@ class GolferResourceIT {
     void createGolfer() throws Exception {
         int databaseSizeBeforeCreate = golferRepository.findAll().size();
         // Create the Golfer
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
         restGolferMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(golfer)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(golferDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Golfer in the database
@@ -117,17 +123,36 @@ class GolferResourceIT {
     void createGolferWithExistingId() throws Exception {
         // Create the Golfer with an existing ID
         golfer.setId(1L);
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
 
         int databaseSizeBeforeCreate = golferRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restGolferMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(golfer)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(golferDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Golfer in the database
         List<Golfer> golferList = golferRepository.findAll();
         assertThat(golferList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = golferRepository.findAll().size();
+        // set the field null
+        golfer.setName(null);
+
+        // Create the Golfer, which fails.
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
+
+        restGolferMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(golferDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Golfer> golferList = golferRepository.findAll();
+        assertThat(golferList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -186,12 +211,13 @@ class GolferResourceIT {
         // Disconnect from session so that the updates on updatedGolfer are not directly saved in db
         em.detach(updatedGolfer);
         updatedGolfer.name(UPDATED_NAME).avgScore(UPDATED_AVG_SCORE).roundsPlayed(UPDATED_ROUNDS_PLAYED).handicap(UPDATED_HANDICAP);
+        GolferDTO golferDTO = golferMapper.toDto(updatedGolfer);
 
         restGolferMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedGolfer.getId())
+                put(ENTITY_API_URL_ID, golferDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedGolfer))
+                    .content(TestUtil.convertObjectToJsonBytes(golferDTO))
             )
             .andExpect(status().isOk());
 
@@ -211,12 +237,15 @@ class GolferResourceIT {
         int databaseSizeBeforeUpdate = golferRepository.findAll().size();
         golfer.setId(count.incrementAndGet());
 
+        // Create the Golfer
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restGolferMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, golfer.getId())
+                put(ENTITY_API_URL_ID, golferDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(golfer))
+                    .content(TestUtil.convertObjectToJsonBytes(golferDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -231,12 +260,15 @@ class GolferResourceIT {
         int databaseSizeBeforeUpdate = golferRepository.findAll().size();
         golfer.setId(count.incrementAndGet());
 
+        // Create the Golfer
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restGolferMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(golfer))
+                    .content(TestUtil.convertObjectToJsonBytes(golferDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -251,9 +283,12 @@ class GolferResourceIT {
         int databaseSizeBeforeUpdate = golferRepository.findAll().size();
         golfer.setId(count.incrementAndGet());
 
+        // Create the Golfer
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restGolferMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(golfer)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(golferDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Golfer in the database
@@ -331,12 +366,15 @@ class GolferResourceIT {
         int databaseSizeBeforeUpdate = golferRepository.findAll().size();
         golfer.setId(count.incrementAndGet());
 
+        // Create the Golfer
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restGolferMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, golfer.getId())
+                patch(ENTITY_API_URL_ID, golferDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(golfer))
+                    .content(TestUtil.convertObjectToJsonBytes(golferDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -351,12 +389,15 @@ class GolferResourceIT {
         int databaseSizeBeforeUpdate = golferRepository.findAll().size();
         golfer.setId(count.incrementAndGet());
 
+        // Create the Golfer
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restGolferMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(golfer))
+                    .content(TestUtil.convertObjectToJsonBytes(golferDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -371,9 +412,14 @@ class GolferResourceIT {
         int databaseSizeBeforeUpdate = golferRepository.findAll().size();
         golfer.setId(count.incrementAndGet());
 
+        // Create the Golfer
+        GolferDTO golferDTO = golferMapper.toDto(golfer);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restGolferMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(golfer)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(golferDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Golfer in the database

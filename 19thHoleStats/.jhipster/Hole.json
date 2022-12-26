@@ -1,19 +1,20 @@
 {
   "applications": ["passionProject"],
-  "changelogDate": "20221220212154",
-  "dto": "no",
+  "changelogDate": "20221226200949",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "hole",
   "fields": [
     {
       "fieldName": "holeNumber",
       "fieldType": "Integer",
-      "fieldValidateRules": ["max"],
+      "fieldValidateRules": ["max", "required"],
       "fieldValidateRulesMax": "18"
     },
     {
       "fieldName": "par",
-      "fieldType": "Integer"
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
     }
   ],
   "fluentMethods": true,
@@ -36,5 +37,5 @@
       "relationshipType": "one-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

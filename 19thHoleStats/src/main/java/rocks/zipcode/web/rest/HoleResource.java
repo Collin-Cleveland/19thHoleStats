@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -13,10 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import rocks.zipcode.domain.Hole;
 import rocks.zipcode.repository.HoleRepository;
+import rocks.zipcode.service.HoleService;
+import rocks.zipcode.service.dto.HoleDTO;
 import rocks.zipcode.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -26,7 +25,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class HoleResource {
 
     private final Logger log = LoggerFactory.getLogger(HoleResource.class);
@@ -36,26 +34,29 @@ public class HoleResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final HoleService holeService;
+
     private final HoleRepository holeRepository;
 
-    public HoleResource(HoleRepository holeRepository) {
+    public HoleResource(HoleService holeService, HoleRepository holeRepository) {
+        this.holeService = holeService;
         this.holeRepository = holeRepository;
     }
 
     /**
      * {@code POST  /holes} : Create a new hole.
      *
-     * @param hole the hole to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new hole, or with status {@code 400 (Bad Request)} if the hole has already an ID.
+     * @param holeDTO the holeDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new holeDTO, or with status {@code 400 (Bad Request)} if the hole has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/holes")
-    public ResponseEntity<Hole> createHole(@Valid @RequestBody Hole hole) throws URISyntaxException {
-        log.debug("REST request to save Hole : {}", hole);
-        if (hole.getId() != null) {
+    public ResponseEntity<HoleDTO> createHole(@Valid @RequestBody HoleDTO holeDTO) throws URISyntaxException {
+        log.debug("REST request to save Hole : {}", holeDTO);
+        if (holeDTO.getId() != null) {
             throw new BadRequestAlertException("A new hole cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Hole result = holeRepository.save(hole);
+        HoleDTO result = holeService.save(holeDTO);
         return ResponseEntity
             .created(new URI("/api/holes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -65,21 +66,23 @@ public class HoleResource {
     /**
      * {@code PUT  /holes/:id} : Updates an existing hole.
      *
-     * @param id the id of the hole to save.
-     * @param hole the hole to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated hole,
-     * or with status {@code 400 (Bad Request)} if the hole is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the hole couldn't be updated.
+     * @param id the id of the holeDTO to save.
+     * @param holeDTO the holeDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated holeDTO,
+     * or with status {@code 400 (Bad Request)} if the holeDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the holeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/holes/{id}")
-    public ResponseEntity<Hole> updateHole(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Hole hole)
-        throws URISyntaxException {
-        log.debug("REST request to update Hole : {}, {}", id, hole);
-        if (hole.getId() == null) {
+    public ResponseEntity<HoleDTO> updateHole(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody HoleDTO holeDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Hole : {}, {}", id, holeDTO);
+        if (holeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, hole.getId())) {
+        if (!Objects.equals(id, holeDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -87,34 +90,34 @@ public class HoleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Hole result = holeRepository.save(hole);
+        HoleDTO result = holeService.update(holeDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, hole.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, holeDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /holes/:id} : Partial updates given fields of an existing hole, field will ignore if it is null
      *
-     * @param id the id of the hole to save.
-     * @param hole the hole to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated hole,
-     * or with status {@code 400 (Bad Request)} if the hole is not valid,
-     * or with status {@code 404 (Not Found)} if the hole is not found,
-     * or with status {@code 500 (Internal Server Error)} if the hole couldn't be updated.
+     * @param id the id of the holeDTO to save.
+     * @param holeDTO the holeDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated holeDTO,
+     * or with status {@code 400 (Bad Request)} if the holeDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the holeDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the holeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/holes/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Hole> partialUpdateHole(
+    public ResponseEntity<HoleDTO> partialUpdateHole(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody Hole hole
+        @NotNull @RequestBody HoleDTO holeDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Hole partially : {}, {}", id, hole);
-        if (hole.getId() == null) {
+        log.debug("REST request to partial update Hole partially : {}, {}", id, holeDTO);
+        if (holeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, hole.getId())) {
+        if (!Objects.equals(id, holeDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -122,23 +125,11 @@ public class HoleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Hole> result = holeRepository
-            .findById(hole.getId())
-            .map(existingHole -> {
-                if (hole.getHoleNumber() != null) {
-                    existingHole.setHoleNumber(hole.getHoleNumber());
-                }
-                if (hole.getPar() != null) {
-                    existingHole.setPar(hole.getPar());
-                }
-
-                return existingHole;
-            })
-            .map(holeRepository::save);
+        Optional<HoleDTO> result = holeService.partialUpdate(holeDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, hole.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, holeDTO.getId().toString())
         );
     }
 
@@ -149,41 +140,38 @@ public class HoleResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of holes in body.
      */
     @GetMapping("/holes")
-    public List<Hole> getAllHoles(@RequestParam(required = false) String filter) {
+    public List<HoleDTO> getAllHoles(@RequestParam(required = false) String filter) {
         if ("holedata-is-null".equals(filter)) {
             log.debug("REST request to get all Holes where holeData is null");
-            return StreamSupport
-                .stream(holeRepository.findAll().spliterator(), false)
-                .filter(hole -> hole.getHoleData() == null)
-                .collect(Collectors.toList());
+            return holeService.findAllWhereHoleDataIsNull();
         }
         log.debug("REST request to get all Holes");
-        return holeRepository.findAll();
+        return holeService.findAll();
     }
 
     /**
      * {@code GET  /holes/:id} : get the "id" hole.
      *
-     * @param id the id of the hole to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the hole, or with status {@code 404 (Not Found)}.
+     * @param id the id of the holeDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the holeDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/holes/{id}")
-    public ResponseEntity<Hole> getHole(@PathVariable Long id) {
+    public ResponseEntity<HoleDTO> getHole(@PathVariable Long id) {
         log.debug("REST request to get Hole : {}", id);
-        Optional<Hole> hole = holeRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(hole);
+        Optional<HoleDTO> holeDTO = holeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(holeDTO);
     }
 
     /**
      * {@code DELETE  /holes/:id} : delete the "id" hole.
      *
-     * @param id the id of the hole to delete.
+     * @param id the id of the holeDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/holes/{id}")
     public ResponseEntity<Void> deleteHole(@PathVariable Long id) {
         log.debug("REST request to delete Hole : {}", id);
-        holeRepository.deleteById(id);
+        holeService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

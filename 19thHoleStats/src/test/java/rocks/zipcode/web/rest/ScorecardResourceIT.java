@@ -21,6 +21,8 @@ import rocks.zipcode.IntegrationTest;
 import rocks.zipcode.domain.Scorecard;
 import rocks.zipcode.domain.enumeration.TeeColor;
 import rocks.zipcode.repository.ScorecardRepository;
+import rocks.zipcode.service.dto.ScorecardDTO;
+import rocks.zipcode.service.mapper.ScorecardMapper;
 
 /**
  * Integration tests for the {@link ScorecardResource} REST controller.
@@ -50,6 +52,9 @@ class ScorecardResourceIT {
 
     @Autowired
     private ScorecardRepository scorecardRepository;
+
+    @Autowired
+    private ScorecardMapper scorecardMapper;
 
     @Autowired
     private EntityManager em;
@@ -99,8 +104,9 @@ class ScorecardResourceIT {
     void createScorecard() throws Exception {
         int databaseSizeBeforeCreate = scorecardRepository.findAll().size();
         // Create the Scorecard
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
         restScorecardMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scorecard)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scorecardDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Scorecard in the database
@@ -118,12 +124,13 @@ class ScorecardResourceIT {
     void createScorecardWithExistingId() throws Exception {
         // Create the Scorecard with an existing ID
         scorecard.setId(1L);
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
 
         int databaseSizeBeforeCreate = scorecardRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restScorecardMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scorecard)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scorecardDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Scorecard in the database
@@ -191,12 +198,13 @@ class ScorecardResourceIT {
             .totalScore(UPDATED_TOTAL_SCORE)
             .totalPutts(UPDATED_TOTAL_PUTTS)
             .fairwaysHit(UPDATED_FAIRWAYS_HIT);
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(updatedScorecard);
 
         restScorecardMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedScorecard.getId())
+                put(ENTITY_API_URL_ID, scorecardDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedScorecard))
+                    .content(TestUtil.convertObjectToJsonBytes(scorecardDTO))
             )
             .andExpect(status().isOk());
 
@@ -216,12 +224,15 @@ class ScorecardResourceIT {
         int databaseSizeBeforeUpdate = scorecardRepository.findAll().size();
         scorecard.setId(count.incrementAndGet());
 
+        // Create the Scorecard
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restScorecardMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, scorecard.getId())
+                put(ENTITY_API_URL_ID, scorecardDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(scorecard))
+                    .content(TestUtil.convertObjectToJsonBytes(scorecardDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -236,12 +247,15 @@ class ScorecardResourceIT {
         int databaseSizeBeforeUpdate = scorecardRepository.findAll().size();
         scorecard.setId(count.incrementAndGet());
 
+        // Create the Scorecard
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restScorecardMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(scorecard))
+                    .content(TestUtil.convertObjectToJsonBytes(scorecardDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -256,9 +270,12 @@ class ScorecardResourceIT {
         int databaseSizeBeforeUpdate = scorecardRepository.findAll().size();
         scorecard.setId(count.incrementAndGet());
 
+        // Create the Scorecard
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restScorecardMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scorecard)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(scorecardDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Scorecard in the database
@@ -340,12 +357,15 @@ class ScorecardResourceIT {
         int databaseSizeBeforeUpdate = scorecardRepository.findAll().size();
         scorecard.setId(count.incrementAndGet());
 
+        // Create the Scorecard
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restScorecardMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, scorecard.getId())
+                patch(ENTITY_API_URL_ID, scorecardDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(scorecard))
+                    .content(TestUtil.convertObjectToJsonBytes(scorecardDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -360,12 +380,15 @@ class ScorecardResourceIT {
         int databaseSizeBeforeUpdate = scorecardRepository.findAll().size();
         scorecard.setId(count.incrementAndGet());
 
+        // Create the Scorecard
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restScorecardMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(scorecard))
+                    .content(TestUtil.convertObjectToJsonBytes(scorecardDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -380,10 +403,13 @@ class ScorecardResourceIT {
         int databaseSizeBeforeUpdate = scorecardRepository.findAll().size();
         scorecard.setId(count.incrementAndGet());
 
+        // Create the Scorecard
+        ScorecardDTO scorecardDTO = scorecardMapper.toDto(scorecard);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restScorecardMockMvc
             .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(scorecard))
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(scorecardDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

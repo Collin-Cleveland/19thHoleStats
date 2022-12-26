@@ -9,16 +9,16 @@
     <!--
         Added the entity Hole.
     -->
-    <changeSet id="20221220212154-1" author="jhipster">
+    <changeSet id="20221226200949-1" author="jhipster">
         <createTable tableName="hole">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="hole_number" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="par" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="course_id" type="bigint">
                 <constraints nullable="true" />
@@ -37,7 +37,7 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20221220212154-1-data" author="jhipster" context="faker">
+    <changeSet id="20221226200949-1-data" author="jhipster" context="faker">
         <loadData
                   file="config/liquibase/fake-data/hole.csv"
                   separator=";"

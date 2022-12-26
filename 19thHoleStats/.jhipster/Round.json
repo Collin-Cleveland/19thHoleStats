@@ -1,7 +1,7 @@
 {
   "applications": ["passionProject"],
-  "changelogDate": "20221220212153",
-  "dto": "no",
+  "changelogDate": "20221226200948",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "round",
   "fields": [
@@ -40,5 +40,5 @@
       "relationshipType": "many-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

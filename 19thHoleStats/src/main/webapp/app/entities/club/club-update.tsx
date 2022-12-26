@@ -87,7 +87,16 @@ export const ClubUpdate = () => {
                   validate={{ required: true }}
                 />
               ) : null}
-              <ValidatedField label={translate('passionProjectApp.club.name')} id="club-name" name="name" data-cy="name" type="text" />
+              <ValidatedField
+                label={translate('passionProjectApp.club.name')}
+                id="club-name"
+                name="name"
+                data-cy="name"
+                type="text"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                }}
+              />
               <ValidatedField label={translate('passionProjectApp.club.state')} id="club-state" name="state" data-cy="state" type="text" />
               <ValidatedField label={translate('passionProjectApp.club.city')} id="club-city" name="city" data-cy="city" type="text" />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/club" replace color="info">

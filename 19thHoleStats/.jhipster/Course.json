@@ -1,17 +1,19 @@
 {
   "applications": ["passionProject"],
-  "changelogDate": "20221220212151",
-  "dto": "no",
+  "changelogDate": "20221226200946",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "course",
   "fields": [
     {
       "fieldName": "name",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "par",
-      "fieldType": "Integer"
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
     }
   ],
   "fluentMethods": true,
@@ -46,5 +48,5 @@
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

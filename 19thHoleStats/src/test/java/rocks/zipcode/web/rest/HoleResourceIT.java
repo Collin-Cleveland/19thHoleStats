@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import rocks.zipcode.IntegrationTest;
 import rocks.zipcode.domain.Hole;
 import rocks.zipcode.repository.HoleRepository;
+import rocks.zipcode.service.dto.HoleDTO;
+import rocks.zipcode.service.mapper.HoleMapper;
 
 /**
  * Integration tests for the {@link HoleResource} REST controller.
@@ -43,6 +45,9 @@ class HoleResourceIT {
 
     @Autowired
     private HoleRepository holeRepository;
+
+    @Autowired
+    private HoleMapper holeMapper;
 
     @Autowired
     private EntityManager em;
@@ -84,8 +89,9 @@ class HoleResourceIT {
     void createHole() throws Exception {
         int databaseSizeBeforeCreate = holeRepository.findAll().size();
         // Create the Hole
+        HoleDTO holeDTO = holeMapper.toDto(hole);
         restHoleMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(hole)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(holeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Hole in the database
@@ -101,17 +107,54 @@ class HoleResourceIT {
     void createHoleWithExistingId() throws Exception {
         // Create the Hole with an existing ID
         hole.setId(1L);
+        HoleDTO holeDTO = holeMapper.toDto(hole);
 
         int databaseSizeBeforeCreate = holeRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restHoleMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(hole)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(holeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Hole in the database
         List<Hole> holeList = holeRepository.findAll();
         assertThat(holeList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkHoleNumberIsRequired() throws Exception {
+        int databaseSizeBeforeTest = holeRepository.findAll().size();
+        // set the field null
+        hole.setHoleNumber(null);
+
+        // Create the Hole, which fails.
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
+        restHoleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(holeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Hole> holeList = holeRepository.findAll();
+        assertThat(holeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkParIsRequired() throws Exception {
+        int databaseSizeBeforeTest = holeRepository.findAll().size();
+        // set the field null
+        hole.setPar(null);
+
+        // Create the Hole, which fails.
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
+        restHoleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(holeDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Hole> holeList = holeRepository.findAll();
+        assertThat(holeList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -166,12 +209,13 @@ class HoleResourceIT {
         // Disconnect from session so that the updates on updatedHole are not directly saved in db
         em.detach(updatedHole);
         updatedHole.holeNumber(UPDATED_HOLE_NUMBER).par(UPDATED_PAR);
+        HoleDTO holeDTO = holeMapper.toDto(updatedHole);
 
         restHoleMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedHole.getId())
+                put(ENTITY_API_URL_ID, holeDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedHole))
+                    .content(TestUtil.convertObjectToJsonBytes(holeDTO))
             )
             .andExpect(status().isOk());
 
@@ -189,12 +233,15 @@ class HoleResourceIT {
         int databaseSizeBeforeUpdate = holeRepository.findAll().size();
         hole.setId(count.incrementAndGet());
 
+        // Create the Hole
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restHoleMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, hole.getId())
+                put(ENTITY_API_URL_ID, holeDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(hole))
+                    .content(TestUtil.convertObjectToJsonBytes(holeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -209,12 +256,15 @@ class HoleResourceIT {
         int databaseSizeBeforeUpdate = holeRepository.findAll().size();
         hole.setId(count.incrementAndGet());
 
+        // Create the Hole
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restHoleMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(hole))
+                    .content(TestUtil.convertObjectToJsonBytes(holeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -229,9 +279,12 @@ class HoleResourceIT {
         int databaseSizeBeforeUpdate = holeRepository.findAll().size();
         hole.setId(count.incrementAndGet());
 
+        // Create the Hole
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restHoleMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(hole)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(holeDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Hole in the database
@@ -305,12 +358,15 @@ class HoleResourceIT {
         int databaseSizeBeforeUpdate = holeRepository.findAll().size();
         hole.setId(count.incrementAndGet());
 
+        // Create the Hole
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restHoleMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, hole.getId())
+                patch(ENTITY_API_URL_ID, holeDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(hole))
+                    .content(TestUtil.convertObjectToJsonBytes(holeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -325,12 +381,15 @@ class HoleResourceIT {
         int databaseSizeBeforeUpdate = holeRepository.findAll().size();
         hole.setId(count.incrementAndGet());
 
+        // Create the Hole
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restHoleMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(hole))
+                    .content(TestUtil.convertObjectToJsonBytes(holeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -345,9 +404,12 @@ class HoleResourceIT {
         int databaseSizeBeforeUpdate = holeRepository.findAll().size();
         hole.setId(count.incrementAndGet());
 
+        // Create the Hole
+        HoleDTO holeDTO = holeMapper.toDto(hole);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restHoleMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(hole)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(holeDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Hole in the database

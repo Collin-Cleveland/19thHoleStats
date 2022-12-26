@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Hole.
     -->
-    <changeSet id="20221220212154-2" author="jhipster">
+    <changeSet id="20221226200949-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="course_id"
                                  baseTableName="hole"

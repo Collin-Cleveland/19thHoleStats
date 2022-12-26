@@ -4,14 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <!--
-        Added the constraints for entity Course.
+        Added the constraints for entity Scorecard.
     -->
-    <changeSet id="20221220212151-2" author="jhipster">
+    <changeSet id="20221226200947-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="club_id"
-                                 baseTableName="course"
-                                 constraintName="fk_course__club_id"
+        <addForeignKeyConstraint baseColumnNames="course_id"
+                                 baseTableName="scorecard"
+                                 constraintName="fk_scorecard__course_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="club"/>
+                                 referencedTableName="course"/>
     </changeSet>
 </databaseChangeLog>

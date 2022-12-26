@@ -1,13 +1,14 @@
 {
   "applications": ["passionProject"],
-  "changelogDate": "20221220212149",
-  "dto": "no",
+  "changelogDate": "20221226200944",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "golfer",
   "fields": [
     {
       "fieldName": "name",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "avgScore",
@@ -42,5 +43,5 @@
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

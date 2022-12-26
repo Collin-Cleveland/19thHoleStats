@@ -3,8 +3,8 @@ import { IHoleData } from 'app/shared/model/hole-data.model';
 
 export interface IHole {
   id?: number;
-  holeNumber?: number | null;
-  par?: number | null;
+  holeNumber?: number;
+  par?: number;
   course?: ICourse | null;
   holeData?: IHoleData | null;
 }

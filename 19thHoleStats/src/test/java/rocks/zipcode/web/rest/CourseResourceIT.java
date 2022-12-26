@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import rocks.zipcode.IntegrationTest;
 import rocks.zipcode.domain.Course;
 import rocks.zipcode.repository.CourseRepository;
+import rocks.zipcode.service.dto.CourseDTO;
+import rocks.zipcode.service.mapper.CourseMapper;
 
 /**
  * Integration tests for the {@link CourseResource} REST controller.
@@ -43,6 +45,9 @@ class CourseResourceIT {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Autowired
     private EntityManager em;
@@ -84,8 +89,9 @@ class CourseResourceIT {
     void createCourse() throws Exception {
         int databaseSizeBeforeCreate = courseRepository.findAll().size();
         // Create the Course
+        CourseDTO courseDTO = courseMapper.toDto(course);
         restCourseMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(course)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(courseDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Course in the database
@@ -101,17 +107,54 @@ class CourseResourceIT {
     void createCourseWithExistingId() throws Exception {
         // Create the Course with an existing ID
         course.setId(1L);
+        CourseDTO courseDTO = courseMapper.toDto(course);
 
         int databaseSizeBeforeCreate = courseRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCourseMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(course)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(courseDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Course in the database
         List<Course> courseList = courseRepository.findAll();
         assertThat(courseList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = courseRepository.findAll().size();
+        // set the field null
+        course.setName(null);
+
+        // Create the Course, which fails.
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
+        restCourseMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(courseDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Course> courseList = courseRepository.findAll();
+        assertThat(courseList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkParIsRequired() throws Exception {
+        int databaseSizeBeforeTest = courseRepository.findAll().size();
+        // set the field null
+        course.setPar(null);
+
+        // Create the Course, which fails.
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
+        restCourseMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(courseDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Course> courseList = courseRepository.findAll();
+        assertThat(courseList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -166,12 +209,13 @@ class CourseResourceIT {
         // Disconnect from session so that the updates on updatedCourse are not directly saved in db
         em.detach(updatedCourse);
         updatedCourse.name(UPDATED_NAME).par(UPDATED_PAR);
+        CourseDTO courseDTO = courseMapper.toDto(updatedCourse);
 
         restCourseMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedCourse.getId())
+                put(ENTITY_API_URL_ID, courseDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedCourse))
+                    .content(TestUtil.convertObjectToJsonBytes(courseDTO))
             )
             .andExpect(status().isOk());
 
@@ -189,12 +233,15 @@ class CourseResourceIT {
         int databaseSizeBeforeUpdate = courseRepository.findAll().size();
         course.setId(count.incrementAndGet());
 
+        // Create the Course
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCourseMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, course.getId())
+                put(ENTITY_API_URL_ID, courseDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(course))
+                    .content(TestUtil.convertObjectToJsonBytes(courseDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -209,12 +256,15 @@ class CourseResourceIT {
         int databaseSizeBeforeUpdate = courseRepository.findAll().size();
         course.setId(count.incrementAndGet());
 
+        // Create the Course
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCourseMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(course))
+                    .content(TestUtil.convertObjectToJsonBytes(courseDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -229,9 +279,12 @@ class CourseResourceIT {
         int databaseSizeBeforeUpdate = courseRepository.findAll().size();
         course.setId(count.incrementAndGet());
 
+        // Create the Course
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCourseMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(course)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(courseDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Course in the database
@@ -303,12 +356,15 @@ class CourseResourceIT {
         int databaseSizeBeforeUpdate = courseRepository.findAll().size();
         course.setId(count.incrementAndGet());
 
+        // Create the Course
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCourseMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, course.getId())
+                patch(ENTITY_API_URL_ID, courseDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(course))
+                    .content(TestUtil.convertObjectToJsonBytes(courseDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -323,12 +379,15 @@ class CourseResourceIT {
         int databaseSizeBeforeUpdate = courseRepository.findAll().size();
         course.setId(count.incrementAndGet());
 
+        // Create the Course
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCourseMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(course))
+                    .content(TestUtil.convertObjectToJsonBytes(courseDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -343,9 +402,14 @@ class CourseResourceIT {
         int databaseSizeBeforeUpdate = courseRepository.findAll().size();
         course.setId(count.incrementAndGet());
 
+        // Create the Course
+        CourseDTO courseDTO = courseMapper.toDto(course);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCourseMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(course)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(courseDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Course in the database

@@ -3,7 +3,7 @@ import { IScorecard } from 'app/shared/model/scorecard.model';
 
 export interface IHoleData {
   id?: number;
-  holeScore?: number | null;
+  holeScore?: number;
   putts?: number | null;
   fairwayHit?: boolean | null;
   hole?: IHole | null;

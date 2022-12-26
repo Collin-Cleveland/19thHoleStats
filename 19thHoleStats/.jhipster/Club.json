@@ -1,13 +1,14 @@
 {
   "applications": ["passionProject"],
-  "changelogDate": "20221220212150",
-  "dto": "no",
+  "changelogDate": "20221226200945",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "club",
   "fields": [
     {
       "fieldName": "name",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "state",
@@ -31,5 +32,5 @@
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

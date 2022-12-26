@@ -3,6 +3,7 @@ package rocks.zipcode.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,7 +23,8 @@ public class HoleData implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "hole_score")
+    @NotNull
+    @Column(name = "hole_score", nullable = false)
     private Integer holeScore;
 
     @Column(name = "putts")

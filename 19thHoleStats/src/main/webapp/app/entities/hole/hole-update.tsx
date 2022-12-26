@@ -105,11 +105,22 @@ export const HoleUpdate = () => {
                 data-cy="holeNumber"
                 type="text"
                 validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
                   max: { value: 18, message: translate('entity.validation.max', { max: 18 }) },
                   validate: v => isNumber(v) || translate('entity.validation.number'),
                 }}
               />
-              <ValidatedField label={translate('passionProjectApp.hole.par')} id="hole-par" name="par" data-cy="par" type="text" />
+              <ValidatedField
+                label={translate('passionProjectApp.hole.par')}
+                id="hole-par"
+                name="par"
+                data-cy="par"
+                type="text"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                  validate: v => isNumber(v) || translate('entity.validation.number'),
+                }}
+              />
               <ValidatedField
                 id="hole-course"
                 name="course"

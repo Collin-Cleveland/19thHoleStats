@@ -94,7 +94,16 @@ export const GolferUpdate = () => {
                   validate={{ required: true }}
                 />
               ) : null}
-              <ValidatedField label={translate('passionProjectApp.golfer.name')} id="golfer-name" name="name" data-cy="name" type="text" />
+              <ValidatedField
+                label={translate('passionProjectApp.golfer.name')}
+                id="golfer-name"
+                name="name"
+                data-cy="name"
+                type="text"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                }}
+              />
               <ValidatedField
                 label={translate('passionProjectApp.golfer.avgScore')}
                 id="golfer-avgScore"

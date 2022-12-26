@@ -5,16 +5,15 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import rocks.zipcode.domain.Scorecard;
 import rocks.zipcode.repository.ScorecardRepository;
+import rocks.zipcode.service.ScorecardService;
+import rocks.zipcode.service.dto.ScorecardDTO;
 import rocks.zipcode.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +23,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ScorecardResource {
 
     private final Logger log = LoggerFactory.getLogger(ScorecardResource.class);
@@ -34,26 +32,29 @@ public class ScorecardResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ScorecardService scorecardService;
+
     private final ScorecardRepository scorecardRepository;
 
-    public ScorecardResource(ScorecardRepository scorecardRepository) {
+    public ScorecardResource(ScorecardService scorecardService, ScorecardRepository scorecardRepository) {
+        this.scorecardService = scorecardService;
         this.scorecardRepository = scorecardRepository;
     }
 
     /**
      * {@code POST  /scorecards} : Create a new scorecard.
      *
-     * @param scorecard the scorecard to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new scorecard, or with status {@code 400 (Bad Request)} if the scorecard has already an ID.
+     * @param scorecardDTO the scorecardDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new scorecardDTO, or with status {@code 400 (Bad Request)} if the scorecard has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/scorecards")
-    public ResponseEntity<Scorecard> createScorecard(@RequestBody Scorecard scorecard) throws URISyntaxException {
-        log.debug("REST request to save Scorecard : {}", scorecard);
-        if (scorecard.getId() != null) {
+    public ResponseEntity<ScorecardDTO> createScorecard(@RequestBody ScorecardDTO scorecardDTO) throws URISyntaxException {
+        log.debug("REST request to save Scorecard : {}", scorecardDTO);
+        if (scorecardDTO.getId() != null) {
             throw new BadRequestAlertException("A new scorecard cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Scorecard result = scorecardRepository.save(scorecard);
+        ScorecardDTO result = scorecardService.save(scorecardDTO);
         return ResponseEntity
             .created(new URI("/api/scorecards/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -63,23 +64,23 @@ public class ScorecardResource {
     /**
      * {@code PUT  /scorecards/:id} : Updates an existing scorecard.
      *
-     * @param id the id of the scorecard to save.
-     * @param scorecard the scorecard to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated scorecard,
-     * or with status {@code 400 (Bad Request)} if the scorecard is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the scorecard couldn't be updated.
+     * @param id the id of the scorecardDTO to save.
+     * @param scorecardDTO the scorecardDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated scorecardDTO,
+     * or with status {@code 400 (Bad Request)} if the scorecardDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the scorecardDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/scorecards/{id}")
-    public ResponseEntity<Scorecard> updateScorecard(
+    public ResponseEntity<ScorecardDTO> updateScorecard(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody Scorecard scorecard
+        @RequestBody ScorecardDTO scorecardDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Scorecard : {}, {}", id, scorecard);
-        if (scorecard.getId() == null) {
+        log.debug("REST request to update Scorecard : {}, {}", id, scorecardDTO);
+        if (scorecardDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, scorecard.getId())) {
+        if (!Objects.equals(id, scorecardDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -87,34 +88,34 @@ public class ScorecardResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Scorecard result = scorecardRepository.save(scorecard);
+        ScorecardDTO result = scorecardService.update(scorecardDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, scorecard.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, scorecardDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /scorecards/:id} : Partial updates given fields of an existing scorecard, field will ignore if it is null
      *
-     * @param id the id of the scorecard to save.
-     * @param scorecard the scorecard to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated scorecard,
-     * or with status {@code 400 (Bad Request)} if the scorecard is not valid,
-     * or with status {@code 404 (Not Found)} if the scorecard is not found,
-     * or with status {@code 500 (Internal Server Error)} if the scorecard couldn't be updated.
+     * @param id the id of the scorecardDTO to save.
+     * @param scorecardDTO the scorecardDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated scorecardDTO,
+     * or with status {@code 400 (Bad Request)} if the scorecardDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the scorecardDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the scorecardDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/scorecards/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Scorecard> partialUpdateScorecard(
+    public ResponseEntity<ScorecardDTO> partialUpdateScorecard(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody Scorecard scorecard
+        @RequestBody ScorecardDTO scorecardDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Scorecard partially : {}, {}", id, scorecard);
-        if (scorecard.getId() == null) {
+        log.debug("REST request to partial update Scorecard partially : {}, {}", id, scorecardDTO);
+        if (scorecardDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, scorecard.getId())) {
+        if (!Objects.equals(id, scorecardDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -122,29 +123,11 @@ public class ScorecardResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Scorecard> result = scorecardRepository
-            .findById(scorecard.getId())
-            .map(existingScorecard -> {
-                if (scorecard.getTeeColor() != null) {
-                    existingScorecard.setTeeColor(scorecard.getTeeColor());
-                }
-                if (scorecard.getTotalScore() != null) {
-                    existingScorecard.setTotalScore(scorecard.getTotalScore());
-                }
-                if (scorecard.getTotalPutts() != null) {
-                    existingScorecard.setTotalPutts(scorecard.getTotalPutts());
-                }
-                if (scorecard.getFairwaysHit() != null) {
-                    existingScorecard.setFairwaysHit(scorecard.getFairwaysHit());
-                }
-
-                return existingScorecard;
-            })
-            .map(scorecardRepository::save);
+        Optional<ScorecardDTO> result = scorecardService.partialUpdate(scorecardDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, scorecard.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, scorecardDTO.getId().toString())
         );
     }
 
@@ -155,41 +138,38 @@ public class ScorecardResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of scorecards in body.
      */
     @GetMapping("/scorecards")
-    public List<Scorecard> getAllScorecards(@RequestParam(required = false) String filter) {
+    public List<ScorecardDTO> getAllScorecards(@RequestParam(required = false) String filter) {
         if ("round-is-null".equals(filter)) {
             log.debug("REST request to get all Scorecards where round is null");
-            return StreamSupport
-                .stream(scorecardRepository.findAll().spliterator(), false)
-                .filter(scorecard -> scorecard.getRound() == null)
-                .collect(Collectors.toList());
+            return scorecardService.findAllWhereRoundIsNull();
         }
         log.debug("REST request to get all Scorecards");
-        return scorecardRepository.findAll();
+        return scorecardService.findAll();
     }
 
     /**
      * {@code GET  /scorecards/:id} : get the "id" scorecard.
      *
-     * @param id the id of the scorecard to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the scorecard, or with status {@code 404 (Not Found)}.
+     * @param id the id of the scorecardDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the scorecardDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/scorecards/{id}")
-    public ResponseEntity<Scorecard> getScorecard(@PathVariable Long id) {
+    public ResponseEntity<ScorecardDTO> getScorecard(@PathVariable Long id) {
         log.debug("REST request to get Scorecard : {}", id);
-        Optional<Scorecard> scorecard = scorecardRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(scorecard);
+        Optional<ScorecardDTO> scorecardDTO = scorecardService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(scorecardDTO);
     }
 
     /**
      * {@code DELETE  /scorecards/:id} : delete the "id" scorecard.
      *
-     * @param id the id of the scorecard to delete.
+     * @param id the id of the scorecardDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/scorecards/{id}")
     public ResponseEntity<Void> deleteScorecard(@PathVariable Long id) {
         log.debug("REST request to delete Scorecard : {}", id);
-        scorecardRepository.deleteById(id);
+        scorecardService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

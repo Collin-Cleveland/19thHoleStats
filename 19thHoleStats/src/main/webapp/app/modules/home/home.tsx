@@ -20,7 +20,7 @@ export const Home = () => {
           <Translate contentKey="home.title">19th Hole Stats</Translate>
         </h2>
         <p className="lead">
-          <Translate contentKey="home.subtitle">Pocket Caddie</Translate>
+          <Translate contentKey="home.subtitle">Pocket Caddie.</Translate>
         </p>
         {account?.login ? (
           <div>

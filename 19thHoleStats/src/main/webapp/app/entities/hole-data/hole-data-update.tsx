@@ -106,6 +106,10 @@ export const HoleDataUpdate = () => {
                 name="holeScore"
                 data-cy="holeScore"
                 type="text"
+                validate={{
+                  required: { value: true, message: translate('entity.validation.required') },
+                  validate: v => isNumber(v) || translate('entity.validation.number'),
+                }}
               />
               <ValidatedField
                 label={translate('passionProjectApp.holeData.putts')}

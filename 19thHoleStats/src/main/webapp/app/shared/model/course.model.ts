@@ -5,8 +5,8 @@ import { IRound } from 'app/shared/model/round.model';
 
 export interface ICourse {
   id?: number;
-  name?: string | null;
-  par?: number | null;
+  name?: string;
+  par?: number;
   club?: IClub | null;
   scorecard?: IScorecard | null;
   holes?: IHole[] | null;

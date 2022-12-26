@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import rocks.zipcode.IntegrationTest;
 import rocks.zipcode.domain.Round;
 import rocks.zipcode.repository.RoundRepository;
+import rocks.zipcode.service.dto.RoundDTO;
+import rocks.zipcode.service.mapper.RoundMapper;
 
 /**
  * Integration tests for the {@link RoundResource} REST controller.
@@ -48,6 +50,9 @@ class RoundResourceIT {
 
     @Autowired
     private RoundRepository roundRepository;
+
+    @Autowired
+    private RoundMapper roundMapper;
 
     @Autowired
     private EntityManager em;
@@ -89,8 +94,9 @@ class RoundResourceIT {
     void createRound() throws Exception {
         int databaseSizeBeforeCreate = roundRepository.findAll().size();
         // Create the Round
+        RoundDTO roundDTO = roundMapper.toDto(round);
         restRoundMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(round)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(roundDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Round in the database
@@ -106,12 +112,13 @@ class RoundResourceIT {
     void createRoundWithExistingId() throws Exception {
         // Create the Round with an existing ID
         round.setId(1L);
+        RoundDTO roundDTO = roundMapper.toDto(round);
 
         int databaseSizeBeforeCreate = roundRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restRoundMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(round)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(roundDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Round in the database
@@ -171,12 +178,13 @@ class RoundResourceIT {
         // Disconnect from session so that the updates on updatedRound are not directly saved in db
         em.detach(updatedRound);
         updatedRound.datePlayed(UPDATED_DATE_PLAYED).numOfHolesPlayed(UPDATED_NUM_OF_HOLES_PLAYED);
+        RoundDTO roundDTO = roundMapper.toDto(updatedRound);
 
         restRoundMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedRound.getId())
+                put(ENTITY_API_URL_ID, roundDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedRound))
+                    .content(TestUtil.convertObjectToJsonBytes(roundDTO))
             )
             .andExpect(status().isOk());
 
@@ -194,12 +202,15 @@ class RoundResourceIT {
         int databaseSizeBeforeUpdate = roundRepository.findAll().size();
         round.setId(count.incrementAndGet());
 
+        // Create the Round
+        RoundDTO roundDTO = roundMapper.toDto(round);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restRoundMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, round.getId())
+                put(ENTITY_API_URL_ID, roundDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(round))
+                    .content(TestUtil.convertObjectToJsonBytes(roundDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -214,12 +225,15 @@ class RoundResourceIT {
         int databaseSizeBeforeUpdate = roundRepository.findAll().size();
         round.setId(count.incrementAndGet());
 
+        // Create the Round
+        RoundDTO roundDTO = roundMapper.toDto(round);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restRoundMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(round))
+                    .content(TestUtil.convertObjectToJsonBytes(roundDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -234,9 +248,12 @@ class RoundResourceIT {
         int databaseSizeBeforeUpdate = roundRepository.findAll().size();
         round.setId(count.incrementAndGet());
 
+        // Create the Round
+        RoundDTO roundDTO = roundMapper.toDto(round);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restRoundMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(round)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(roundDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Round in the database
@@ -308,12 +325,15 @@ class RoundResourceIT {
         int databaseSizeBeforeUpdate = roundRepository.findAll().size();
         round.setId(count.incrementAndGet());
 
+        // Create the Round
+        RoundDTO roundDTO = roundMapper.toDto(round);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restRoundMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, round.getId())
+                patch(ENTITY_API_URL_ID, roundDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(round))
+                    .content(TestUtil.convertObjectToJsonBytes(roundDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -328,12 +348,15 @@ class RoundResourceIT {
         int databaseSizeBeforeUpdate = roundRepository.findAll().size();
         round.setId(count.incrementAndGet());
 
+        // Create the Round
+        RoundDTO roundDTO = roundMapper.toDto(round);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restRoundMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(round))
+                    .content(TestUtil.convertObjectToJsonBytes(roundDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -348,9 +371,12 @@ class RoundResourceIT {
         int databaseSizeBeforeUpdate = roundRepository.findAll().size();
         round.setId(count.incrementAndGet());
 
+        // Create the Round
+        RoundDTO roundDTO = roundMapper.toDto(round);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restRoundMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(round)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(roundDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Round in the database
