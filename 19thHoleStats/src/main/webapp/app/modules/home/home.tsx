@@ -16,12 +16,7 @@ export const Home = () => {
         <span className="hipster rounded" />
       </Col>
       <Col md="9">
-        <h2>
-          <Translate contentKey="home.title">19th Hole Stats</Translate>
-        </h2>
-        <p className="lead">
-          <Translate contentKey="home.subtitle">Pocket Caddie.</Translate>
-        </p>
+
         {account?.login ? (
           <div>
             <Alert color="success">
@@ -29,6 +24,8 @@ export const Home = () => {
                 You are logged in as user {account.login}.
               </Translate>
             </Alert>
+            <br/><span>To start a new scorecard, click <a href="/scorecard/new">HERE</a></span>
+            <br/><span>Record your hole score <a href="/hole-data/new">HERE</a></span>
           </div>
         ) : (
           <div>
