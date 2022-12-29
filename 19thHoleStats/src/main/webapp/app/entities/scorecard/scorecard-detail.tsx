@@ -4,6 +4,9 @@ import { Button, Row, Col } from 'reactstrap';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import './scorecard-details.scss';
+
+
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
@@ -20,7 +23,7 @@ export const ScorecardDetail = () => {
 
   const scorecardEntity = useAppSelector(state => state.scorecard.entity);
   return (
-    <Row>
+    <><Row>
       <Col md="8">
         <h2 data-cy="scorecardDetailsHeading">
           <Translate contentKey="passionProjectApp.scorecard.detail.title">Scorecard</Translate>
@@ -76,6 +79,94 @@ export const ScorecardDetail = () => {
         </Button>
       </Col>
     </Row>
+    <div>&nbsp;</div> 
+    <div>
+        <article className="front9">
+          <div className="hole">
+            <span>Front</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+            <span>Out</span>
+          </div>
+          <div className="par">
+            <span>Par</span>
+            <span>4</span>
+            <span>5</span>
+            <span>4</span>
+            <span>4</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>4</span>
+            <span>4</span>
+            <span>36</span>
+          </div>
+          <div className="score">
+            <span>Score</span>
+            <span>3</span>
+            <span>5</span>
+            <span>4</span>
+            <span>5</span>
+            <span>3</span>
+            <span>3</span>
+            <span>5</span>
+            <span>4</span>
+            <span>4</span>
+            <span className="sub">36</span>
+          </div>
+        </article><article className="back9">
+          <div className="hole">
+            <span>Back</span>
+            <span>10</span>
+            <span>11</span>
+            <span>12</span>
+            <span>13</span>
+            <span>14</span>
+            <span>15</span>
+            <span>16</span>
+            <span>17</span>
+            <span>18</span>
+            <span>In</span>
+            <span>Total</span>
+          </div>
+          <div className="par">
+            <span>Par</span>
+            <span>5</span>
+            <span>3</span>
+            <span>4</span>
+            <span>3</span>
+            <span>5</span>
+            <span>4</span>
+            <span>4</span>
+            <span>3</span>
+            <span>5</span>
+            <span>36</span>
+            <span>72</span>
+          </div>
+          <div className="score">
+            <span>Score</span>
+            <span>6</span>
+            <span>2</span>
+            <span>5</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>4</span>
+            <span>3</span>
+            <span>6</span>
+            <span className="sub">41</span>
+            <span className="total">77</span>
+          </div>
+        </article>
+      </div></>
+
   );
 };
 

@@ -1,0 +1,42 @@
+.front9, .back9 {
+	margin-bottom: 1em;
+	.hole {
+		background-color: rgb(39, 142, 251);
+		color: rgb(0, 0, 0);
+		span {padding: .5em 0;}
+	}
+	.par {
+		background-color: #ccc;
+		color: rgb(0, 0, 0);
+		span {padding: .25em 0;}
+	}
+	.score {
+        background-color: rgb(255, 255, 255);
+		color: rgb(0, 0, 0);
+		span {padding: .75em 0;}
+	}
+	span {
+		border: rgba(0,0,0,.25) solid 1px;
+		border-width: 0 0 0 1px;
+		display: inline-block;
+		text-align: center;
+		width: 6em;
+		
+		&:first-child {
+			text-align: left;
+			padding-left: 1em;
+			border-width: 0;
+		}
+	}
+}
+
+
+@media screen and (min-width: 80em) {
+	.front9, .back9 {
+		display: inline-block
+	}
+	.back9 span:first-child {
+		display: none;
+	}
+}
+	
