@@ -2,9 +2,11 @@
 Main page styles
 ========================================================================== */
 .hipster {
-  display: inline-block;
-  width: 100%;
-  height: 497px;
+  display: flex;
+  width: 55%;
+  height: 300px;
   background: url('../../../content/images/19thHoleStatsLOGO.png') no-repeat center top;
   background-size: contain;
+  align-items: center;
+  justify-content: center;
 }
