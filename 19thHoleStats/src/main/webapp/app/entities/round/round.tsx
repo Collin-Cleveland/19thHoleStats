@@ -27,6 +27,16 @@ export const Round = () => {
     dispatch(getEntities({}));
   };
 
+  const getGolferName = (id: number) => {
+    if (id === 1) {return 'Collin'}
+    if (id === 2) {return 'User'}
+  }
+
+  const getGolfCourseName = (id: number) => {
+    if (id === 1) {return 'Odessa National'}
+    if (id === 2) {return 'Frog Hollow'}
+  }
+
   return (
     <div>
       <h2 id="round-heading" data-cy="RoundHeading">
@@ -48,9 +58,9 @@ export const Round = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
+                {/* <th>
                   <Translate contentKey="passionProjectApp.round.id">ID</Translate>
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="passionProjectApp.round.datePlayed">Date Played</Translate>
                 </th>
@@ -72,16 +82,16 @@ export const Round = () => {
             <tbody>
               {roundList.map((round, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>
+                  {/* <td>
                     <Button tag={Link} to={`/round/${round.id}`} color="link" size="sm">
                       {round.id}
                     </Button>
-                  </td>
+                  </td> */}
                   <td>{round.datePlayed ? <TextFormat type="date" value={round.datePlayed} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>{round.numOfHolesPlayed}</td>
                   <td>{round.scorecard ? <Link to={`/scorecard/${round.scorecard.id}`}>{round.scorecard.id}</Link> : ''}</td>
-                  <td>{round.course ? <Link to={`/course/${round.course.id}`}>{round.course.id}</Link> : ''}</td>
-                  <td>{round.golfer ? <Link to={`/golfer/${round.golfer.id}`}>{round.golfer.id}</Link> : ''}</td>
+                  <td>{round.course ? <Link to={`/course/${round.course.id}`}>{getGolfCourseName(round.course.id)}</Link> : ''}</td>
+                  <td>{round.golfer ? <Link to={`/golfer/${round.golfer.id}`}>{getGolferName(round.golfer.id)}</Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/round/${round.id}`} color="info" size="sm" data-cy="entityDetailsButton">

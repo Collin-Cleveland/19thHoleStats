@@ -23,6 +23,11 @@ export const getEntities = createAsyncThunk('holeData/fetch_entity_list', async 
   return axios.get<IHoleData[]>(requestUrl);
 });
 
+export const getEntities2 = createAsyncThunk('holeData/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
+  const requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`;
+  return axios.get<IHoleData[]>(requestUrl);
+});
+
 export const getEntity = createAsyncThunk(
   'holeData/fetch_entity',
   async (id: string | number) => {

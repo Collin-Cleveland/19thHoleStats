@@ -12,6 +12,7 @@ export interface IScorecard {
   course?: ICourse | null;
   round?: IRound | null;
   holeData?: IHoleData[] | null;
+  holeCourseName?: string;
 }
 
 export const defaultValue: Readonly<IScorecard> = {};

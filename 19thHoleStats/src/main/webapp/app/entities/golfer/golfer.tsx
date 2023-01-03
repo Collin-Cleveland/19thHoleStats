@@ -27,6 +27,11 @@ export const Golfer = () => {
     dispatch(getEntities({}));
   };
 
+  const getGolferUser = (id: number) => {
+    if (id === 1) {return 'Admin'}
+    if (id === 2) {return 'User'}
+  }
+
   return (
     <div>
       <h2 id="golfer-heading" data-cy="GolferHeading">
@@ -48,9 +53,9 @@ export const Golfer = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
+                {/* <th>
                   <Translate contentKey="passionProjectApp.golfer.id">ID</Translate>
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="passionProjectApp.golfer.name">Name</Translate>
                 </th>
@@ -72,16 +77,16 @@ export const Golfer = () => {
             <tbody>
               {golferList.map((golfer, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>
+                  {/* <td>
                     <Button tag={Link} to={`/golfer/${golfer.id}`} color="link" size="sm">
                       {golfer.id}
                     </Button>
-                  </td>
+                  </td> */}
                   <td>{golfer.name}</td>
                   <td>{golfer.avgScore}</td>
                   <td>{golfer.roundsPlayed}</td>
                   <td>{golfer.handicap}</td>
-                  <td>{golfer.user ? golfer.user.id : ''}</td>
+                  <td>{golfer.user ? getGolferUser(golfer.user.id) : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/golfer/${golfer.id}`} color="info" size="sm" data-cy="entityDetailsButton">

@@ -4,7 +4,7 @@ import { Button, Row, Col } from 'reactstrap';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+// import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity } from './hole.reducer';
@@ -17,6 +17,11 @@ export const HoleDetail = () => {
   useEffect(() => {
     dispatch(getEntity(id));
   }, []);
+
+  const getGolfCourseName = (id: number) => {
+    if (id === 1) {return 'Odessa National'}
+    if (id === 2) {return 'Frog Hollow'}
+  }
 
   const holeEntity = useAppSelector(state => state.hole.entity);
   return (
@@ -47,7 +52,7 @@ export const HoleDetail = () => {
           <dt>
             <Translate contentKey="passionProjectApp.hole.course">Course</Translate>
           </dt>
-          <dd>{holeEntity.course ? holeEntity.course.id : ''}</dd>
+          <dd>{holeEntity.course ? getGolfCourseName(holeEntity.course.id) : ''}</dd>
         </dl>
         <Button tag={Link} to="/hole" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

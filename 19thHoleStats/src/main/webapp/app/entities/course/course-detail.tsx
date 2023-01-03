@@ -18,6 +18,11 @@ export const CourseDetail = () => {
     dispatch(getEntity(id));
   }, []);
 
+  const getGolfClubName = (id: number) => {
+    if (id === 1) {return 'Odessa National Golf Club'}
+    if (id === 2) {return 'Frog Hollow Golf Club'}
+  }
+
   const courseEntity = useAppSelector(state => state.course.entity);
   return (
     <Row>
@@ -47,7 +52,7 @@ export const CourseDetail = () => {
           <dt>
             <Translate contentKey="passionProjectApp.course.club">Club</Translate>
           </dt>
-          <dd>{courseEntity.club ? courseEntity.club.id : ''}</dd>
+          <dd>{courseEntity.club ? getGolfClubName(courseEntity.club.id) : ''}</dd>
         </dl>
         <Button tag={Link} to="/course" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

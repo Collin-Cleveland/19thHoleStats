@@ -114,7 +114,7 @@ export const ScorecardUpdate = () => {
                   </option>
                 ))}
               </ValidatedField>
-              <ValidatedField
+              {/* <ValidatedField
                 label={translate('passionProjectApp.scorecard.totalScore')}
                 id="scorecard-totalScore"
                 name="totalScore"
@@ -134,7 +134,7 @@ export const ScorecardUpdate = () => {
                 name="fairwaysHit"
                 data-cy="fairwaysHit"
                 type="text"
-              />
+              /> */}
               <ValidatedField
                 id="scorecard-course"
                 name="course"

@@ -48,9 +48,9 @@ export const Club = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
+                {/* <th>
                   <Translate contentKey="passionProjectApp.club.id">ID</Translate>
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="passionProjectApp.club.name">Name</Translate>
                 </th>
@@ -66,11 +66,11 @@ export const Club = () => {
             <tbody>
               {clubList.map((club, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>
+                  {/* <td>
                     <Button tag={Link} to={`/club/${club.id}`} color="link" size="sm">
                       {club.id}
                     </Button>
-                  </td>
+                  </td> */}
                   <td>{club.name}</td>
                   <td>{club.state}</td>
                   <td>{club.city}</td>

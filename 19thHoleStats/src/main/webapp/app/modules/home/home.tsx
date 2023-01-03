@@ -7,19 +7,23 @@ export const Home = () => {
 
   return (
     <Row>
-      <span className="hipster" />
+      <div className="container">
+      <span className="logo" />
+      </div>
+      &nbsp;
+      <div className="text-center">
+        <a href="/scorecard/new">
+          <Button className="block"> New Scorecard </Button>
+        </a>
+      </div>
       <div>
-              <a href="/scorecard/new">
-                <Button> New Scorecard </Button>
-              </a>
-            </div>
-            <div>&nbsp;</div> 
-            <div>
-              <a href="/hole-data/new">
-                <Button> Record Hole Data </Button>
-              </a>
-            </div>
-      
+        &nbsp;
+      </div> 
+      <div className="text-center">
+        <a href="/hole-data/new">
+          <Button className="block"> Record Hole Data </Button>
+        </a>
+      </div>
     </Row>
   );
 };

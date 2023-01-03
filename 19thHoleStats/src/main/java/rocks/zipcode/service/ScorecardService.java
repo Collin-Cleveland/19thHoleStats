@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import rocks.zipcode.domain.Golfer;
+import rocks.zipcode.domain.Round;
 import rocks.zipcode.domain.Scorecard;
 import rocks.zipcode.repository.ScorecardRepository;
 import rocks.zipcode.service.dto.ScorecardDTO;
@@ -88,6 +91,17 @@ public class ScorecardService {
         log.debug("Request to get all Scorecards");
         return scorecardRepository.findAll().stream().map(scorecardMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
+
+//ADDED METHOD
+    // @Transactional(readOnly = true)
+    // public List<ScorecardDTO> findAllByGolfer(Golfer id) {
+    // log.debug("Request to get all scorecards where Round is Golfer Id");
+    // return StreamSupport
+    //     .stream(scorecardRepository.findAll().spliterator(), false)
+    //     .filter(scorecard -> scorecard.getRound(id))
+    //     .map(scorecardMapper::toDto)
+    //     .collect(Collectors.toCollection(LinkedList::new));
+    // }
 
     /**
      *  Get all the scorecards where Round is {@code null}.

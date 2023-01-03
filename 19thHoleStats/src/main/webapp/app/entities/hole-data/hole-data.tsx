@@ -10,12 +10,14 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { IHoleData } from 'app/shared/model/hole-data.model';
 import { getEntities } from './hole-data.reducer';
 
+
 export const HoleData = () => {
   const dispatch = useAppDispatch();
 
   const location = useLocation();
   const navigate = useNavigate();
 
+  
   const holeDataList = useAppSelector(state => state.holeData.entities);
   const loading = useAppSelector(state => state.holeData.loading);
 
@@ -48,9 +50,9 @@ export const HoleData = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
+                {/* <th>
                   <Translate contentKey="passionProjectApp.holeData.id">ID</Translate>
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="passionProjectApp.holeData.holeScore">Hole Score</Translate>
                 </th>
@@ -72,11 +74,11 @@ export const HoleData = () => {
             <tbody>
               {holeDataList.map((holeData, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>
+                  {/* <td>
                     <Button tag={Link} to={`/hole-data/${holeData.id}`} color="link" size="sm">
                       {holeData.id}
                     </Button>
-                  </td>
+                  </td> */}
                   <td>{holeData.holeScore}</td>
                   <td>{holeData.putts}</td>
                   <td>{holeData.fairwayHit ? 'true' : 'false'}</td>

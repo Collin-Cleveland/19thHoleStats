@@ -27,6 +27,19 @@ export const Scorecard = () => {
     dispatch(getEntities({}));
   };
 
+  const getGolfCourseName = (id: number) => {
+    if (id === 1){return 'Odessa National'}
+    if (id === 2){return 'Frog Hollow'}
+  }
+
+  // const allHoleData = getAllHoleData();
+
+  // const getTotalRoundScore = (allHoleData: List<HoleDataDTO>) => {
+  //   for (var i = 0; i < allHoleData.length; i++) {
+  //     var total = total + allHoleData[i];
+  //   }
+  // }
+
   return (
     <div>
       <h2 id="scorecard-heading" data-cy="ScorecardHeading">
@@ -49,7 +62,7 @@ export const Scorecard = () => {
             <thead>
               <tr>
                 <th>
-                  <Translate contentKey="passionProjectApp.scorecard.id">ID</Translate>
+                  <div></div>
                 </th>
                 <th>
                   <Translate contentKey="passionProjectApp.scorecard.teeColor">Tee Color</Translate>
@@ -73,8 +86,8 @@ export const Scorecard = () => {
               {scorecardList.map((scorecard, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
-                    <Button tag={Link} to={`/scorecard/${scorecard.id}`} color="link" size="sm">
-                      {scorecard.id}
+                    <Button tag={Link} to={`/scorecard/${scorecard.id}`} color="link" size="sm" style={{ textDecoration: 'none' }}>
+                      {'View'}
                     </Button>
                   </td>
                   <td>
@@ -83,7 +96,9 @@ export const Scorecard = () => {
                   <td>{scorecard.totalScore}</td>
                   <td>{scorecard.totalPutts}</td>
                   <td>{scorecard.fairwaysHit}</td>
-                  <td>{scorecard.course ? <Link to={`/course/${scorecard.course.id}`}>{scorecard.course.id}</Link> : ''}</td>
+                  <td>{scorecard.course ? <Link to={`/course/${scorecard.course.id}`} style={{ textDecoration: 'none' }}>
+                    {getGolfCourseName(scorecard.course.id)}
+                    </Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/scorecard/${scorecard.id}`} color="info" size="sm" data-cy="entityDetailsButton">

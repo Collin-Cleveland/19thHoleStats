@@ -27,6 +27,11 @@ export const Hole = () => {
     dispatch(getEntities({}));
   };
 
+  const getGolfCourseName = (id: number) => {
+    if (id === 1) {return 'Odessa National'}
+    if (id === 2) {return 'Frog Hollow'}
+  }
+
   return (
     <div>
       <h2 id="hole-heading" data-cy="HoleHeading">
@@ -48,9 +53,9 @@ export const Hole = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
+                {/* <th>
                   <Translate contentKey="passionProjectApp.hole.id">ID</Translate>
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="passionProjectApp.hole.holeNumber">Hole Number</Translate>
                 </th>
@@ -66,14 +71,14 @@ export const Hole = () => {
             <tbody>
               {holeList.map((hole, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>
+                  {/* <td>
                     <Button tag={Link} to={`/hole/${hole.id}`} color="link" size="sm">
                       {hole.id}
                     </Button>
-                  </td>
+                  </td> */}
                   <td>{hole.holeNumber}</td>
                   <td>{hole.par}</td>
-                  <td>{hole.course ? <Link to={`/course/${hole.course.id}`}>{hole.course.id}</Link> : ''}</td>
+                  <td>{hole.course ? <Link to={`/course/${hole.course.id}`}>{getGolfCourseName(hole.course.id)}</Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/hole/${hole.id}`} color="info" size="sm" data-cy="entityDetailsButton">
