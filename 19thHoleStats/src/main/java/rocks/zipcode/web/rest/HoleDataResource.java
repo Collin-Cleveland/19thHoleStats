@@ -9,12 +9,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import rocks.zipcode.domain.Scorecard;
 import rocks.zipcode.repository.HoleDataRepository;
 import rocks.zipcode.service.HoleDataService;
+import rocks.zipcode.service.ScorecardService;
 import rocks.zipcode.service.dto.HoleDataDTO;
+import rocks.zipcode.service.dto.ScorecardDTO;
 import rocks.zipcode.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -36,6 +41,9 @@ public class HoleDataResource {
     private final HoleDataService holeDataService;
 
     private final HoleDataRepository holeDataRepository;
+
+    @Autowired
+    private ScorecardService scorecardService;
 
     public HoleDataResource(HoleDataService holeDataService, HoleDataRepository holeDataRepository) {
         this.holeDataService = holeDataService;
@@ -141,6 +149,27 @@ public class HoleDataResource {
     public List<HoleDataDTO> getAllHoleData() {
         log.debug("REST request to get all HoleData");
         return holeDataService.findAll();
+    }
+//ADDED METHOD
+    // @GetMapping("/hole-data/scorecard/{id}")
+    // public List<HoleDataDTO> getAllHoleDataForScorecard(Long id) {
+    //     log.debug("REST request to get all HoleData");
+    //     return holeDataService.findAllForScorecard(id);
+    // }
+
+//ADDED METHOD
+    // @GetMapping("/hole-data/scorecard/{id}")
+    // public List<HoleDataDTO> getAllHoleDataForScorecard(Long id) {
+    //     Optional<ScorecardDTO> scorecard = scorecardService.findOne(id);
+    //     List<HoleDataDTO> holeDataDTOList = holeDataService.findAllForScorecard(scorecard);
+    //     return holeDataService.findAllForScorecard(id);
+    // }
+
+//ADDED METHOD
+    @GetMapping("/hole-data/scorecard/{id}")
+    public List<HoleDataDTO> getAllHoleDataForScorecard(Long id) {
+        log.debug("REST request to get all HoleData");
+        return holeDataService.findAllByScorecard(id);
     }
 
     /**

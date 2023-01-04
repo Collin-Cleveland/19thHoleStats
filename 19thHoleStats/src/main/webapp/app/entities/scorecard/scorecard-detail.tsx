@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
 // import { Button, Row, Col } from 'reactstrap';
 // import { Translate } from 'react-jhipster';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './scorecard-details.scss';
-import { IHoleData } from 'app/shared/model/hole-data.model';
 import { getEntities2 } from '../hole-data/hole-data.reducer';
 
 // import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntities, getEntity } from '../hole/hole.reducer';
+import { getEntities } from '../hole/hole.reducer';
 
 import { Translate } from 'react-jhipster';
 import { Col, Row } from 'reactstrap';
@@ -53,50 +51,44 @@ export const ScorecardDetail = () => {
 
       {holeList && holeList.length > 0 ? (
         <Row>
-        <Col md="2">
-        {holeDataList.map((holeData, i) => (
-          <div key={`entity-${i}`}>
-          <div>
-          <article className="scorecardDisplay">
-          <div className="hole">
-            <span>Hole</span>
-            <span>{holeData.hole.id}</span>
-          </div>
-        </article>
-          </div>
-          </div>
-        ))}
-        </Col>
+          <Col md="2">
+          {holeDataList.map((holeData, i) => (
+            <div key={`entity-${i}`}>
+                <article className="scorecardDisplay">
+                  <div className="hole">
+                    <span>Hole</span>
+                    <span>{holeData.hole.id}</span>
+                  </div>
+                </article>
+            </div>
+          ))}
+          </Col>
 
-        <Col md="2">
-        {holeList.slice(0,18).map((hole, i) => (
-          <div key={`entity-${i}`}>
-          <div>
-          <article className="scorecardDisplay">
-        <div className="par">
-            <span>Par</span>
-            <span>{hole.par}</span>
+          <Col md="2">
+          {holeList.slice(0,18).map((hole, i) => (
+            <div key={`entity-${i}`}>
+              <article className="scorecardDisplay">
+                <div className="par">
+                  <span>Par</span>
+                  <span>{hole.par}</span>
+                </div>
+              </article>
             </div>
-        </article>
-          </div>
-          </div>
-        ))}
-        </Col>
-        
-        <Col md="2">
-        {holeDataList.map((holeData, i) => (
-          <div key={`entity-${i}`}>
-          <div>
-          <article className="scorecardDisplay">
-        <div className="score">
-            <span>Score</span>
-            <span>{holeData.holeScore}</span>
+          ))}
+          </Col>
+          
+          <Col md="2">
+          {holeDataList.map((holeData, i) => (
+            <div key={`entity-${i}`}>
+              <article className="scorecardDisplay">
+                  <div className="score">
+                    <span>Score</span>
+                    <span>{holeData.holeScore}</span>
+                  </div>
+              </article>
             </div>
-        </article>
-          </div>
-          </div>
-        ))}
-        </Col>
+          ))}
+          </Col>
           
         </Row>
         

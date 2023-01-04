@@ -1,5 +1,6 @@
 package rocks.zipcode.service;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rocks.zipcode.domain.HoleData;
+import rocks.zipcode.domain.Scorecard;
 import rocks.zipcode.repository.HoleDataRepository;
 import rocks.zipcode.service.dto.HoleDataDTO;
+import rocks.zipcode.service.dto.ScorecardDTO;
 import rocks.zipcode.service.mapper.HoleDataMapper;
 
 /**
@@ -86,6 +89,29 @@ public class HoleDataService {
     public List<HoleDataDTO> findAll() {
         log.debug("Request to get all HoleData");
         return holeDataRepository.findAll().stream().map(holeDataMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+    }
+    
+//ADDED MEHTOD
+    // @Transactional(readOnly = true)
+    // public List<HoleDataDTO> findAllForScorecard(Long id) {
+    //     log.debug("Request to get all HoleData for a given Scorecard");
+    //     return holeDataRepository.findAllForScorecard(id);
+    // }
+
+//ADDED MEHTOD
+    // @Transactional(readOnly = true)
+    // public List<HoleDataDTO> findAllForScorecard(Optional<ScorecardDTO> scorecard) {
+    //     log.debug("Request to get all HoleData for a given Scorecard");
+    //     return holeDataRepository.findAllByScorecard(scorecard)
+    //     .stream()
+    //     .map(holeDataMapper::toDto)
+    //     .collect(Collectors.toCollection(LinkedList::new));
+    // }
+
+    @Transactional(readOnly = true)
+    public List<HoleDataDTO> findAllByScorecard(Long id) {
+        return holeDataRepository.findAll().stream().map(holeDataMapper::toDto).filter(hd -> hd.getScorecard().getId().equals(id))
+        .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
