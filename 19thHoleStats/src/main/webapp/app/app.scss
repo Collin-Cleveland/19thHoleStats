@@ -2,12 +2,15 @@
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
 body {
-  background: #fafafa;
-  margin: 0;
+  background: url('../content/images/tiger3.jpeg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 a {
-  color: #533f03;
+  color: #000000;
   font-weight: bold;
 }
 
@@ -30,6 +33,7 @@ a {
     overflow-x: hidden;
     padding: 1rem;
     .card {
+      background-color: rgba(255, 255, 255, 0.582);
       padding: 1rem;
     }
     .view-routes {

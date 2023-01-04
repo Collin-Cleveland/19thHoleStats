@@ -51,39 +51,57 @@ export const ScorecardDetail = () => {
 
       {holeList && holeList.length > 0 ? (
         <Row>
-          <Col md="2">
-          {holeDataList.map((holeData, i) => (
+          <Col md="1">
+          <article className="scorecardDisplay">
+            <div className="hole">
+              <span>Hole</span>
+              <div>+----------</div>
+            </div>
+          </article>
+          {holeDataList.slice(0,18).map((holeData, i) => (
             <div key={`entity-${i}`}>
                 <article className="scorecardDisplay">
                   <div className="hole">
-                    <span>Hole</span>
                     <span>{holeData.hole.id}</span>
+                    <div>+----------</div>
                   </div>
                 </article>
             </div>
           ))}
           </Col>
 
-          <Col md="2">
+          <Col md="1">
+          <article className="scorecardDisplay">
+            <div className="par">
+              <span>Par</span>
+              <div>-----------</div>
+            </div>
+          </article>
           {holeList.slice(0,18).map((hole, i) => (
             <div key={`entity-${i}`}>
               <article className="scorecardDisplay">
                 <div className="par">
-                  <span>Par</span>
                   <span>{hole.par}</span>
+                  <div>-----------</div>
                 </div>
               </article>
             </div>
           ))}
           </Col>
           
-          <Col md="2">
-          {holeDataList.map((holeData, i) => (
+          <Col md="1">
+          <article className="scorecardDisplay">
+            <div className="score">
+              <span>Score</span>
+              <div>----------+</div>
+            </div>
+          </article>
+          {holeDataList.slice(0,18).map((holeData, i) => (
             <div key={`entity-${i}`}>
               <article className="scorecardDisplay">
                   <div className="score">
-                    <span>Score</span>
                     <span>{holeData.holeScore}</span>
+                    <div>----------+</div>
                   </div>
               </article>
             </div>
@@ -91,9 +109,88 @@ export const ScorecardDetail = () => {
           </Col>
           
         </Row>
-        
 
-        // <div>
+      ):(!loading && (
+        <div className="alert alert-warning">
+          <Translate contentKey="passionProjectApp.hole.home.notFound">No Holes found</Translate>
+        </div>
+      ))};
+
+{holeList && holeList.length > 0 ? (
+        <Row>
+          <Col md="1">
+          <article className="scorecardDisplay">
+            <div className="hole">
+              <span>Hole</span>
+              <div>+----------</div>
+            </div>
+          </article>
+          {holeDataList.slice(18,36).map((holeData, i) => (
+            <div key={`entity-${i}`}>
+                <article className="scorecardDisplay">
+                  <div className="hole">
+                    <span>{holeData.hole.id}</span>
+                    <div>+----------</div>
+                  </div>
+                </article>
+            </div>
+          ))}
+          </Col>
+
+          <Col md="1">
+          <article className="scorecardDisplay">
+            <div className="par">
+              <span>Par</span>
+              <div>-----------</div>
+            </div>
+          </article>
+          {holeList.slice(18,36).map((hole, i) => (
+            <div key={`entity-${i}`}>
+              <article className="scorecardDisplay">
+                <div className="par">
+                  <span>{hole.par}</span>
+                  <div>-----------</div>
+                </div>
+              </article>
+            </div>
+          ))}
+          </Col>
+          
+          <Col md="1">
+          <article className="scorecardDisplay">
+            <div className="score">
+              <span>Score</span>
+              <div>----------+</div>
+            </div>
+          </article>
+          {holeDataList.slice(18,36).map((holeData, i) => (
+            <div key={`entity-${i}`}>
+              <article className="scorecardDisplay">
+                  <div className="score">
+                    <span>{holeData.holeScore}</span>
+                    <div>----------+</div>
+                  </div>
+              </article>
+            </div>
+          ))}
+          </Col>
+          
+        </Row>
+
+      ):(!loading && (
+        <div className="alert alert-warning">
+          <Translate contentKey="passionProjectApp.hole.home.notFound">No Holes found</Translate>
+        </div>
+      ))};
+    </div>
+
+    
+  )
+};
+
+export default ScorecardDetail;
+
+ // <div>
         // {holeList.map((hole, holeData, i) => (
         //   <div key={`entity-${i}`}>
         //   <div>
@@ -116,15 +213,6 @@ export const ScorecardDetail = () => {
         // ))}
         // </div>
 
-
-      ):(!loading && (
-        <div className="alert alert-warning">
-          <Translate contentKey="passionProjectApp.hole.home.notFound">No Holes found</Translate>
-        </div>
-      ))};
-    </div>
-  )
-};
 //     <div>
 //         <article className="front9">
 //           <div className="hole">
@@ -217,9 +305,6 @@ export const ScorecardDetail = () => {
 //       </div>
 //   );
 // };
-
-
-export default ScorecardDetail;
 
 // <><Col>
     //   <Row md="8">

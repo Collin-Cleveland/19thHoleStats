@@ -24,13 +24,13 @@
 	}
 	span {
 		border: rgba(0,0,0,.5) solid 1px;
-		border-width: 0 0 0 1px;
+		border-width: 1 1 1 1px;
 		display: inline-block;
 		text-align: center;
 		width: 4em;
 		
 		&:first-child {
-			text-align: left;
+			text-align: center;
 			padding-left: 1em;
 			border-width: 0;
 		}
