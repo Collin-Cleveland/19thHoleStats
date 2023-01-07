@@ -1,0 +1,27 @@
+{
+  "applications": ["groupProject"],
+  "changelogDate": "20230107193946",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "jhi_like",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Like",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "video",
+      "relationshipName": "videoUser",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "videoUser",
+      "otherEntityRelationshipName": "like",
+      "relationshipName": "video",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

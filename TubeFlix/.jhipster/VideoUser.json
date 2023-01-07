@@ -1,0 +1,46 @@
+{
+  "applications": ["groupProject"],
+  "changelogDate": "20230107193943",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "video_user",
+  "fields": [
+    {
+      "fieldName": "userName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "VideoUser",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "ownerSide": true,
+      "relationshipName": "internalUser",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "video",
+      "otherEntityRelationshipName": "uploader",
+      "relationshipName": "video",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "like",
+      "otherEntityRelationshipName": "video",
+      "relationshipName": "like",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "videoUser",
+      "relationshipName": "comment",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

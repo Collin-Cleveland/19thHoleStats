@@ -1,0 +1,47 @@
+{
+  "applications": ["groupProject"],
+  "changelogDate": "20230107193944",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "video",
+  "fields": [
+    {
+      "fieldName": "videoLink",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "uploadDate",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Video",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "videoUser",
+      "otherEntityRelationshipName": "video",
+      "relationshipName": "uploader",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "video",
+      "relationshipName": "comment",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

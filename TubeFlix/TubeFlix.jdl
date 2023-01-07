@@ -1,0 +1,48 @@
+application {
+    config {
+        baseName groupProject,
+        packageName rocks.zipcode,
+        applicationType monolith,
+        authenticationType jwt,
+        prodDatabaseType mysql,
+        clientFramework react
+    }
+    entities *
+}
+
+entity VideoUser {
+    userName String required
+}
+
+entity Video {
+    videoLink String required
+    title String required
+    description String
+    uploadDate LocalDate
+}
+
+entity Comment {
+	commentDate LocalDate
+    body String
+}
+entity Like {
+}
+
+relationship OneToMany {
+    VideoUser{video} to Video{uploader}
+    VideoUser to Like{video}
+}
+relationship  ManyToOne {
+    Like{videoUser} to Video
+    Comment{video} to Video{comment}
+    Comment{videoUser} to VideoUser{comment}
+}
+
+relationship OneToOne {
+    VideoUser{internalUser} to User
+}
+
+paginate Video with infinite-scroll
+
+dto * with mapstruct
+service * with serviceClass

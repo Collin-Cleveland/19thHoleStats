@@ -1,0 +1,37 @@
+{
+  "applications": ["groupProject"],
+  "changelogDate": "20230107193945",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "comment",
+  "fields": [
+    {
+      "fieldName": "commentDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "body",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Comment",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "video",
+      "otherEntityRelationshipName": "comment",
+      "relationshipName": "video",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "videoUser",
+      "otherEntityRelationshipName": "comment",
+      "relationshipName": "videoUser",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}
