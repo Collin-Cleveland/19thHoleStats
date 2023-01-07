@@ -32,8 +32,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/tubeflix;DB_CLOSE_DELAY=-1;MODE=LEGACY
-    username: TubeFlix
+    url: jdbc:h2:file:./target/h2db/db/groupproject;DB_CLOSE_DELAY=-1;MODE=LEGACY
+    username: groupProject
     password:
     hikari:
       poolName: Hikari
@@ -85,7 +85,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: Y2RlYTMzMDI4Njc2M2Y2OWNiZjhkZjE1YTk4MjM1MmI5MDg4ODgwYjdkODhiMTliYzVlMzBlZTVjNDA4OGNmNzdkZGYyYjU3NGI2NjVkNDE0NTc3MGExNWYwZTI1MzU4NWQzZmJmZjllYTcxNjAyN2QwNThhYjUzMzk1NjA2ZjM=
+        base64-secret: NjcyZjI4NzEwYTUwYTM0MDJlMzUzNzJkOTZiZGFiYmI4M2NjY2M4MDU1Y2M0NzVhMzE0OGU0N2VlMGVkMDVlZGVjMGUxNWQxM2M0ZjYzZWMzOThiNzg0ZWRlNDA5YmU0ZjI2YTdhNWJlMGE2NTI1ZjQ4NjM1YjA2ZWNiNzRkMGU=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

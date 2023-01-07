@@ -1,6 +1,6 @@
 {
   "applications": ["groupProject"],
-  "changelogDate": "20230107193945",
+  "changelogDate": "20230107202721",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "comment",

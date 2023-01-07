@@ -1,6 +1,6 @@
 {
   "applications": ["groupProject"],
-  "changelogDate": "20230107193944",
+  "changelogDate": "20230107202720",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "video",

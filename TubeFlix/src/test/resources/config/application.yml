@@ -15,7 +15,7 @@
 
 spring:
   application:
-    name: TubeFlix
+    name: groupProject
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -33,13 +33,13 @@ spring:
     basename: i18n/messages
   task:
     execution:
-      thread-name-prefix: tube-flix-task-
+      thread-name-prefix: group-project-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: tube-flix-scheduling-
+      thread-name-prefix: group-project-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -56,9 +56,9 @@ server:
 # ===================================================================
 jhipster:
   clientApp:
-    name: 'tubeFlixApp'
+    name: 'groupProjectApp'
   mail:
-    from: TubeFlix@localhost.com
+    from: groupProject@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
@@ -72,7 +72,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: Y2RlYTMzMDI4Njc2M2Y2OWNiZjhkZjE1YTk4MjM1MmI5MDg4ODgwYjdkODhiMTliYzVlMzBlZTVjNDA4OGNmNzdkZGYyYjU3NGI2NjVkNDE0NTc3MGExNWYwZTI1MzU4NWQzZmJmZjllYTcxNjAyN2QwNThhYjUzMzk1NjA2ZjM=
+        base64-secret: NjcyZjI4NzEwYTUwYTM0MDJlMzUzNzJkOTZiZGFiYmI4M2NjY2M4MDU1Y2M0NzVhMzE0OGU0N2VlMGVkMDVlZGVjMGUxNWQxM2M0ZjYzZWMzOThiNzg0ZWRlNDA5YmU0ZjI2YTdhNWJlMGE2NTI1ZjQ4NjM1YjA2ZWNiNzRkMGU=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
 

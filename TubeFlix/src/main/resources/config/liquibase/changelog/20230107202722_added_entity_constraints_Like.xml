@@ -4,19 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <!--
-        Added the constraints for entity Comment.
+        Added the constraints for entity Like.
     -->
-    <changeSet id="20230107193945-2" author="jhipster">
+    <changeSet id="20230107202722-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="video_id"
-                                 baseTableName="comment"
-                                 constraintName="fk_comment__video_id"
+        <addForeignKeyConstraint baseColumnNames="video_user_id"
+                                 baseTableName="jhi_like"
+                                 constraintName="fk_jhi_like__video_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="video"/>
 
-        <addForeignKeyConstraint baseColumnNames="video_user_id"
-                                 baseTableName="comment"
-                                 constraintName="fk_comment__video_user_id"
+        <addForeignKeyConstraint baseColumnNames="video_id"
+                                 baseTableName="jhi_like"
+                                 constraintName="fk_jhi_like__video_id"
                                  referencedColumnNames="id"
                                  referencedTableName="video_user"/>
     </changeSet>

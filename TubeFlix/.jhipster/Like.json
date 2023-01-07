@@ -1,6 +1,6 @@
 {
   "applications": ["groupProject"],
-  "changelogDate": "20230107193946",
+  "changelogDate": "20230107202722",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "jhi_like",
