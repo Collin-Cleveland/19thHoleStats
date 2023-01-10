@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import rocks.zipcode.IntegrationTest;
 import rocks.zipcode.domain.Video;
 import rocks.zipcode.repository.VideoRepository;
@@ -141,24 +142,6 @@ class VideoResourceIT {
 
     @Test
     @Transactional
-    void checkVideoLinkIsRequired() throws Exception {
-        int databaseSizeBeforeTest = videoRepository.findAll().size();
-        // set the field null
-        video.setVideoLink(null);
-
-        // Create the Video, which fails.
-        VideoDTO videoDTO = videoMapper.toDto(video);
-
-        restVideoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(videoDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Video> videoList = videoRepository.findAll();
-        assertThat(videoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkTitleIsRequired() throws Exception {
         int databaseSizeBeforeTest = videoRepository.findAll().size();
         // set the field null
@@ -187,7 +170,7 @@ class VideoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(video.getId().intValue())))
-            .andExpect(jsonPath("$.[*].videoLink").value(hasItem(DEFAULT_VIDEO_LINK)))
+            .andExpect(jsonPath("$.[*].videoLink").value(hasItem(DEFAULT_VIDEO_LINK.toString())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].uploadDate").value(hasItem(DEFAULT_UPLOAD_DATE.toString())));
@@ -205,7 +188,7 @@ class VideoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(video.getId().intValue()))
-            .andExpect(jsonPath("$.videoLink").value(DEFAULT_VIDEO_LINK))
+            .andExpect(jsonPath("$.videoLink").value(DEFAULT_VIDEO_LINK.toString()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.uploadDate").value(DEFAULT_UPLOAD_DATE.toString()));

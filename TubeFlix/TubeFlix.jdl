@@ -15,7 +15,7 @@ entity VideoUser {
 }
 
 entity Video {
-    videoLink String required
+    videoLink TextBlob required
     title String required
     description String
     uploadDate LocalDate

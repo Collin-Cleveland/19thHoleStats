@@ -1,13 +1,14 @@
 {
   "applications": ["groupProject"],
-  "changelogDate": "20230107202720",
+  "changelogDate": "20230110162834",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "video",
   "fields": [
     {
       "fieldName": "videoLink",
-      "fieldType": "String",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
       "fieldValidateRules": ["required"]
     },
     {

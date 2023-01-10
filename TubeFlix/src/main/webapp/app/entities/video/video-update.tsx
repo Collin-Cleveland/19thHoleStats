@@ -97,7 +97,7 @@ export const VideoUpdate = () => {
                 id="video-videoLink"
                 name="videoLink"
                 data-cy="videoLink"
-                type="text"
+                type="textarea"
                 validate={{
                   required: { value: true, message: translate('entity.validation.required') },
                 }}

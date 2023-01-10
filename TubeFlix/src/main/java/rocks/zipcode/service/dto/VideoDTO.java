@@ -3,6 +3,7 @@ package rocks.zipcode.service.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
 /**
@@ -13,7 +14,7 @@ public class VideoDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
+    @Lob
     private String videoLink;
 
     @NotNull

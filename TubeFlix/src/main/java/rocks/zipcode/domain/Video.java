@@ -26,7 +26,7 @@ public class Video implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
+    @Lob
     @Column(name = "video_link", nullable = false)
     private String videoLink;
 
